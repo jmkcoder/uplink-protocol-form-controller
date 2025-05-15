@@ -19,7 +19,7 @@ A flexible, reactive form management system for both multi-step and single-step 
 ## Installation
 
 ```bash
-npm install @odyssey/form-controller
+npm install @uplink-protocol/form-controller
 ```
 
 ## Form Controller Basics
@@ -41,7 +41,7 @@ Even though the controller is designed for multi-step forms, you can easily use 
 
 ```javascript
 // Import the form controller
-const { FormController } = require('@odyssey/form-controller');
+const { FormController } = require('@uplink-protocol/form-controller');
 
 // Create a form configuration with a single step
 const formConfig = {
@@ -320,7 +320,7 @@ Dynamic validators are powerful validation functions that have access to the ent
 
 ```javascript
 // Require the form controller
-const { FormController } = require('@odyssey/form-controller');
+const { FormController } = require('@uplink-protocol/form-controller');
 
 // Create form configuration
 const formConfig = {/* ...form config... */};

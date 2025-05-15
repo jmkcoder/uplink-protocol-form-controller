@@ -1,0 +1,5 @@
+{
+  "name": "form",
+  "description": "DynamicFormStepperController - A controller for multi-step forms with dynamic configuration\r\n  @param config - The form configuration with steps and field definitions\r\n  @returns A controller instance with bindings and methods for form state management",
+  "entry": "./src/controller.ts"
+}

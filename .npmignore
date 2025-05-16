@@ -1,0 +1,29 @@
+# Development files
+src/
+test/
+.vscode/
+.idea/
+.github/
+
+# Configuration files
+tsconfig.json
+webpack.config.js
+.eslintrc.js
+.babelrc
+
+# CI files
+.travis.yml
+.gitlab-ci.yml
+.github/workflows/
+
+# Git files
+.git/
+.gitignore
+
+# Build process
+*.log
+.npmrc
+
+# Don't ignore these files
+!dist/
+!LICENSE

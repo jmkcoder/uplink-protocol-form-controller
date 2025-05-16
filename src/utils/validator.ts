@@ -18,7 +18,6 @@ export const validateField = (
   if (field.disabled) {
     return { isValid: true };
   }
-
   // Handle required validation whether it's in validation object or directly on field
   const isRequired = field.required === true || (field.validation && field.validation.required === true);
     // Required validation with special handling for checkboxes/booleans
@@ -27,9 +26,11 @@ export const validateField = (
     : value === undefined || value === null || value === '';
     
   if (isRequired && isEmpty) {
+    // Use custom error message if available (either at field or validation level)
+    const errorMessage = field.validation?.errorMessage || `${field.label} is required`;
     return {
       isValid: false,
-      error: `${field.label} is required`
+      error: errorMessage
     };
   }
   
@@ -46,26 +47,24 @@ export const validateField = (
   }
 
   // Type-specific validations
-  switch (field.type) {
-    case 'email':
+  switch (field.type) {    case 'email':
       // Basic email validation
       const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailPattern.test(String(value))) {
         return {
           isValid: false,
-          error: `Please enter a valid email address`
+          error: field.validation?.errorMessage  || `Please enter a valid email address`
         };
       }
       break;
     
     case 'text':
     case 'textarea':
-    case 'password':
-      // Min length validation
+    case 'password':      // Min length validation
       if (validation.minLength !== undefined && String(value).length < validation.minLength) {
         return {
           isValid: false,
-          error: `${field.label} must be at least ${validation.minLength} characters`
+          error: field.validation?.errorMessage || `${field.label} must be at least ${validation.minLength} characters`
         };
       }
       
@@ -73,7 +72,7 @@ export const validateField = (
       if (validation.maxLength !== undefined && String(value).length > validation.maxLength) {
         return {
           isValid: false,
-          error: `${field.label} cannot exceed ${validation.maxLength} characters`
+          error: field.validation?.errorMessage || `${field.label} cannot exceed ${validation.maxLength} characters`
         };
       }
       
@@ -86,19 +85,18 @@ export const validateField = (
         if (!pattern.test(String(value))) {
           return {
             isValid: false,
-            error: `${field.label} format is invalid`
+            error: field.validation?.errorMessage || `${field.label} format is invalid`
           };
         }
       }
       break;
       
     case 'number':
-    case 'tel':
-      // Min value validation
+    case 'tel':      // Min value validation
       if (validation.min !== undefined && Number(value) < validation.min) {
         return {
           isValid: false,
-          error: `${field.label} must be at least ${validation.min}`
+          error: field.validation?.errorMessage || `${field.label} must be at least ${validation.min}`
         };
       }
       
@@ -106,7 +104,7 @@ export const validateField = (
       if (validation.max !== undefined && Number(value) > validation.max) {
         return {
           isValid: false,
-          error: `${field.label} cannot exceed ${validation.max}`
+          error: field.validation?.errorMessage || `${field.label} cannot exceed ${validation.max}`
         };
       }
       break;
@@ -126,8 +124,7 @@ export const validateField = (
       };
     }
   }
-  
-  // Dynamic validator
+    // Dynamic validator
   if (validation.dynamicValidator && context) {
     // Create a complete context object for the validator
     const validatorContext: ValidatorContext = {
@@ -146,12 +143,12 @@ export const validateField = (
     if (dynamicResult === false) {
       return {
         isValid: false,
-        error: `${field.label} is invalid`
+        error: validation.errorMessage || `${field.label} is invalid`
       };
     } else if (typeof dynamicResult === 'string') {
       return {
         isValid: false,
-        error: dynamicResult
+        error: typeof dynamicResult === 'string' ? dynamicResult : validation.errorMessage || `${field.label} is invalid`
       };
     }
   }

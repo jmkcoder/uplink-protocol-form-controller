@@ -1,6 +1,7 @@
 {
   "name": "@uplink-protocol/form-controller",
   "version": "0.1.0",
+  "description": "Reactive multi-step form controller with dynamic validation and state management",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "module": "dist/index.js",
@@ -11,14 +12,39 @@
     }
   },
   "scripts": {
-    "build": "webpack"
+    "build": "webpack",
+    "clean": "rimraf dist",
+    "prepublishOnly": "npm run clean && npm run build",
+    "lint": "eslint src --ext .ts",
+    "test": "echo \"No tests specified\""
   },
+  "keywords": [
+    "form",
+    "controller",
+    "validation",
+    "multi-step",
+    "wizard",
+    "react",
+    "forms",
+    "uplink-protocol"
+  ],
+  "author": "Odyssey Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jmkcoder/uplink-protocol-form-controller.git"
+  },
+  "bugs": {
+    "url": "https://github.com/jmkcoder/uplink-protocol-form-controller/issues"
+  },
+  "homepage": "https://github.com/jmkcoder/uplink-protocol-form-controller#readme",
   "dependencies": {
-    "@uplink-protocol/core": "^0.0.1"
+    "@uplink-protocol/core": "^0.0.2"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0",
     "@babel/preset-env": "^7.0.0",
+    "rimraf": "^6.0.1",
     "ts-loader": "^9.0.0",
     "typescript": "^5.0.0",
     "webpack": "^5.0.0",

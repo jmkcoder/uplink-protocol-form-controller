@@ -8,7 +8,7 @@
 
 > **FormController**(`config`): `object`
 
-Defined in: [controller.ts:20](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/8991786ca293392fbb1434d450f2a292fb340f1d/src/controller.ts#L20)
+Defined in: [controller.ts:20](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/3be0707852a25b5a0095411b2a880ebe20f7683e/src/controller.ts#L20)
 
 DynamicFormStepperController - A controller for multi-step forms with dynamic configuration
 

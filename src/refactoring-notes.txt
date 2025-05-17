@@ -1,0 +1,137 @@
+// Methods that should be moved from the controller to services
+
+// Methods that can be moved to FormService:
+resetForm: () => {
+  formService.resetForm();
+  interactionService.resetTouchTracking();
+  
+  // Re-validate all steps immediately (without showing errors)
+  controller.methods.validateForm(false);
+}
+
+submitForm: () => {
+  // Mark all fields in all steps as touched for complete validation
+  interactionService.markAllFieldsTouched(true);
+
+  // Validate the entire form before submission (with error display)
+  const isValid = controller.methods.validateForm(true);
+
+  if (isValid) {
+    // Prepare final form data
+    const formData = formService.getAllData();
+
+    // Here you would typically submit the data to a server
+    console.log("Form submitted:", JSON.stringify(formData, null, 2));
+
+    return {
+      success: true,
+      data: formData,
+    };
+  } else {
+    console.warn("Cannot submit form: validation failed");
+
+    // Find the first invalid step
+    const validity = stepsValidityService.get();
+    const config = configService.get();
+
+    const firstInvalidStepIndex = config.steps.findIndex(
+      (step) => !validity[step.id]
+    );
+
+    // Navigate to the first invalid step if not already there
+    if (
+      firstInvalidStepIndex !== -1 &&
+      firstInvalidStepIndex !== stepperService.get()
+    ) {
+      stepperService.set(firstInvalidStepIndex);
+    }
+
+    return {
+      success: false,
+      errors: fieldErrorsService.get(),
+    };
+  }
+}
+
+// Methods that can be moved to ConfigService:
+updateConfig: (newConfig: FormConfig) => {
+  configService.updateConfig(newConfig);
+  interactionService.resetTouchTracking();
+  controller.methods.resetForm();
+  
+  // Re-validate all steps immediately (without showing errors)
+  controller.methods.validateForm(false);
+}
+
+// Methods that can be delegated to StepperService:
+nextStep: () => {
+  const currentStep = controller.bindings.currentStep.current;
+  
+  // Mark all fields in the current step as touched to show all validation errors
+  interactionService.markAllFieldsInStepTouched(currentStep.id, true);
+
+  // Force validation just before navigation attempt with error display
+  const currentStepValid = controller.methods.validateCurrentStep(true);
+
+  // Only proceed if current step is valid
+  if (currentStepValid) {
+    return stepperService.nextStep();
+  }
+
+  return stepperService.get();
+}
+
+// Methods that can be delegated to validators
+registerValidator: (name: string, validatorFn: DynamicValidator) => {
+  const { registerValidator } = require("./utils/validator-registry");
+  registerValidator(name, validatorFn);
+}
+
+unregisterValidator: (name: string): boolean => {
+  const { unregisterValidator } = require("./utils/validator-registry");
+  return unregisterValidator(name);
+}
+
+getAvailableValidators: () => {
+  const { predefinedValidators } = require("./utils/validator-registry");
+  return predefinedValidators;
+}
+
+// ## Form Controller Fixes - May 16, 2025
+
+// This document details key fixes applied to the form-controller package to resolve test failures.
+
+// ### Key Issues Fixed
+
+// 1. **Synchronous State Updates**: 
+//    - Original implementation relied on reactive updates through service subscriptions
+//    - Tests expected immediate state changes in binding values
+//    - Fixed by directly updating binding current values alongside service state changes
+
+// 2. **Step Navigation**:
+//    - Fixed `nextStep()`, `prevStep()`, and `goToStep()` to update both service state and binding values
+//    - Improved `goToStep()` to handle edge cases and return proper boolean results
+//    - Enhanced `validateAndNext()` in stepper service to properly navigate
+
+// 3. **Error State Management**:
+//    - Added proper error state handling in `validateField()` to ensure error messages are accessible
+//    - Now ensuring field errors are properly initialized and updated in binding values
+
+// 4. **Form Data Updates**:
+//    - Fixed `updateField()` to use immutable updates for reactive state
+//    - Improved `resetForm()` to properly re-initialize form data
+//    - Enhanced `updateConfig()` to update all necessary binding values
+
+// 5. **Step Management**:
+//    - Fixed `addStep()` and `removeStep()` to maintain consistent state
+//    - Added cleanup for removed steps to prevent memory leaks
+
+// ### Recommended Practices
+
+// When working with the form controller:
+
+// 1. Always update both service state and binding current values for synchronous operations
+// 2. Use immutable updates (spread operator) when modifying nested objects
+// 3. Ensure validation state is properly maintained across form operations
+// 4. When adding new methods, follow the pattern of updating both service state and binding values
+// 5. Always add proper type checks when accessing potentially undefined values

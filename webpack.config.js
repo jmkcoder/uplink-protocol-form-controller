@@ -1,7 +1,8 @@
 const path = require('path');
 const fs = require('fs');
+const { execSync } = require('child_process');
 
-// Custom plugin to generate description
+// Custom plugin to generate description and TypeScript declarations
 class UplinkDescriptionPlugin {
   apply(compiler) {
     compiler.hooks.done.tap('UplinkDescriptionPlugin', (stats) => {
@@ -20,6 +21,18 @@ class UplinkDescriptionPlugin {
       // Update uplink.config.json with the description
       uplinkConfig.description = description.replace(/\/\*\*|\*\/|\*/g, '').trim();
       fs.writeFileSync('./uplink.config.json', JSON.stringify(uplinkConfig, null, 2));
+      
+      // Generate TypeScript declaration files with documentation
+      console.log('Generating TypeScript declaration files with documentation...');
+      try {
+        execSync('npx tsc --declaration --emitDeclarationOnly --outDir ./dist/types', { stdio: 'inherit' });
+        
+        // Generate API documentation using TypeDoc
+        console.log('Generating API documentation with TypeDoc...');
+        execSync('npx typedoc --options typedoc.json', { stdio: 'inherit' });
+      } catch (error) {
+        console.error('Error generating TypeScript declarations or documentation:', error);
+      }
     });
   }
 }

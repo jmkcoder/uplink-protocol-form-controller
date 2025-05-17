@@ -1,3 +1,7 @@
+**@uplink-protocol/form-controller v0.1.0**
+
+***
+
 # @uplink-protocol/form-controller
 
 A lightweight yet powerful form management system for building dynamic, multi-step forms with advanced validation capabilities. This module is part of the Odyssey Uplink Protocol.
@@ -148,12 +152,12 @@ form.bindings.fieldErrors.subscribe(errors => {
 
 For detailed documentation and examples, see:
 
-- [Features Guide](./docs/features-guide.md) - Comprehensive listing of all features and capabilities
-- [Usage Guide](./docs/usage-guide.md) - Step-by-step guide to using the form controller
-- [Validation Guide](./docs/validation-guide.md) - In-depth guide to validation capabilities
-- [Technical Guide](./docs/technical-guide.md) - Implementation details and best practices
-- [TypeScript Usage](./docs/typescript-usage.md) - Guide to using the form controller with TypeScript
-- [API Reference](./docs/api/README.md) - Auto-generated API documentation with types and examples
+- [Features Guide](_media/features-guide.md) - Comprehensive listing of all features and capabilities
+- [Usage Guide](_media/usage-guide.md) - Step-by-step guide to using the form controller
+- [Validation Guide](_media/validation-guide.md) - In-depth guide to validation capabilities
+- [Technical Guide](_media/technical-guide.md) - Implementation details and best practices
+- [TypeScript Usage](_media/typescript-usage.md) - Guide to using the form controller with TypeScript
+- [API Reference](_media/README.md) - Auto-generated API documentation with types and examples
 
 ## Use Cases
 

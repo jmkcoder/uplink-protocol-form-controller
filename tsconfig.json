@@ -9,7 +9,9 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "allowJs": true,
-    "checkJs": false
+    "checkJs": false,
+    "removeComments": false,
+    "declarationMap": true
   },
   "include": ["src"]
 }

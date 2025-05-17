@@ -1,15 +1,31 @@
 // Validator registry for dynamic field validators
 import { Field } from "../interfaces/field.interface";
 
-// Context provided to dynamic validators
+/**
+ * Context provided to dynamic validators.
+ * Gives validators access to the current field, form data, and location information.
+ */
 export interface ValidatorContext {
+  /** The field configuration of the field being validated */
   field: Field;
+  
+  /** The entire form data flattened into a single object */
   formData: Record<string, any>;
+  
+  /** The ID of the step containing the field being validated */
   stepId: string;
+  
+  /** The ID of the field being validated */
   fieldId: string;
 }
 
-// Dynamic validator function signature
+/**
+ * Dynamic validator function signature.
+ * 
+ * @param value The value to validate
+ * @param context The validation context with form state
+ * @returns true if valid, or an error message string if invalid
+ */
 export type DynamicValidator = (
   value: any,
   context: ValidatorContext

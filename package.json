@@ -1,6 +1,6 @@
 {
   "name": "@uplink-protocol/form-controller",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Reactive multi-step form controller with dynamic validation and state management",
   "main": "dist/index.js",
   "types": "dist/types/index.d.ts",
@@ -18,8 +18,8 @@
     "clean": "rimraf dist",
     "prepublishOnly": "npm run clean && npm run build && npm run build:types && npm run build:docs",
     "lint": "eslint src --ext .ts",
-    "test": "jest",
-    "test:watch": "jest --watch",
+    "test": "jest --config=jest.config.js",
+    "test:watch": "jest --config=jest.config.js --watch",
     "docs": "typedoc --options typedoc.json",
     "build:all": "npm run clean && npm run build && npm run build:types && npm run build:docs"
   },

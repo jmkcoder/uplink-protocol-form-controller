@@ -1,4 +1,4 @@
-[**@uplink-protocol/form-controller v0.1.0**](../README.md)
+[**@uplink-protocol/form-controller v0.1.1**](../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Class: InteractionService
 
-Defined in: services/interaction.service.ts:7
+Defined in: [services/interaction.service.ts:7](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/8991786ca293392fbb1434d450f2a292fb340f1d/src/services/interaction.service.ts#L7)
 
 Service for tracking user interactions with form fields
 
@@ -16,7 +16,7 @@ Service for tracking user interactions with form fields
 
 > **new InteractionService**(`configService`, `fieldService`): `InteractionService`
 
-Defined in: services/interaction.service.ts:12
+Defined in: [services/interaction.service.ts:12](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/8991786ca293392fbb1434d450f2a292fb340f1d/src/services/interaction.service.ts#L12)
 
 #### Parameters
 
@@ -38,7 +38,7 @@ Defined in: services/interaction.service.ts:12
 
 > **getTouchState**(): `Record`\<`string`, `Record`\<`string`, `boolean`\>\>
 
-Defined in: services/interaction.service.ts:135
+Defined in: [services/interaction.service.ts:135](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/8991786ca293392fbb1434d450f2a292fb340f1d/src/services/interaction.service.ts#L135)
 
 Get touch state for all fields
 
@@ -54,7 +54,7 @@ Touch state
 
 > **isFieldTouched**(`stepId`, `fieldId`): `boolean`
 
-Defined in: services/interaction.service.ts:89
+Defined in: [services/interaction.service.ts:89](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/8991786ca293392fbb1434d450f2a292fb340f1d/src/services/interaction.service.ts#L89)
 
 Check if a field has been touched
 
@@ -84,7 +84,7 @@ Whether the field has been touched
 
 > **markAllFieldsInStepTouched**(`stepId`, `touched`): `void`
 
-Defined in: services/interaction.service.ts:52
+Defined in: [services/interaction.service.ts:52](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/8991786ca293392fbb1434d450f2a292fb340f1d/src/services/interaction.service.ts#L52)
 
 Mark all fields in a step as touched
 
@@ -112,7 +112,7 @@ Touch state (defaults to true)
 
 > **markAllFieldsTouched**(`touched`): `void`
 
-Defined in: services/interaction.service.ts:69
+Defined in: [services/interaction.service.ts:69](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/8991786ca293392fbb1434d450f2a292fb340f1d/src/services/interaction.service.ts#L69)
 
 Mark all fields in all steps as touched
 
@@ -134,7 +134,7 @@ Touch state (defaults to true)
 
 > **markFieldTouched**(`stepId`, `fieldId`, `touched`): `void`
 
-Defined in: services/interaction.service.ts:40
+Defined in: [services/interaction.service.ts:40](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/8991786ca293392fbb1434d450f2a292fb340f1d/src/services/interaction.service.ts#L40)
 
 Mark a field as touched
 
@@ -168,7 +168,7 @@ Touch state (defaults to true)
 
 > **resetTouchTracking**(): `void`
 
-Defined in: services/interaction.service.ts:127
+Defined in: [services/interaction.service.ts:127](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/8991786ca293392fbb1434d450f2a292fb340f1d/src/services/interaction.service.ts#L127)
 
 Reset touch tracking state
 
@@ -182,7 +182,7 @@ Reset touch tracking state
 
 > **validateStepWithTouchedErrors**(`stepId`): `boolean`
 
-Defined in: services/interaction.service.ts:97
+Defined in: [services/interaction.service.ts:97](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/8991786ca293392fbb1434d450f2a292fb340f1d/src/services/interaction.service.ts#L97)
 
 Validate a step showing errors only for touched fields
 

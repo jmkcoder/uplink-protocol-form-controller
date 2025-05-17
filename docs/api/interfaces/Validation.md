@@ -1,4 +1,4 @@
-[**@uplink-protocol/form-controller v0.1.0**](../README.md)
+[**@uplink-protocol/form-controller v0.1.1**](../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Interface: Validation
 
-Defined in: [interfaces/validation.interface.ts:5](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/da9b373dfdce0655de13c8f4010de07e8f23017d/src/interfaces/validation.interface.ts#L5)
+Defined in: [interfaces/validation.interface.ts:5](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/8991786ca293392fbb1434d450f2a292fb340f1d/src/interfaces/validation.interface.ts#L5)
 
 Validation interface defining rules for form field validation.
 Supports both static and dynamic validation approaches.
@@ -17,7 +17,7 @@ Supports both static and dynamic validation approaches.
 
 > `optional` **custom**: (`value`) => `string` \| `boolean`
 
-Defined in: [interfaces/validation.interface.ts:29](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/da9b373dfdce0655de13c8f4010de07e8f23017d/src/interfaces/validation.interface.ts#L29)
+Defined in: [interfaces/validation.interface.ts:29](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/8991786ca293392fbb1434d450f2a292fb340f1d/src/interfaces/validation.interface.ts#L29)
 
 Custom validation function
 
@@ -41,7 +41,7 @@ true if valid, or an error message string if invalid
 
 > `optional` **dynamicValidator**: `string`
 
-Defined in: [interfaces/validation.interface.ts:35](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/da9b373dfdce0655de13c8f4010de07e8f23017d/src/interfaces/validation.interface.ts#L35)
+Defined in: [interfaces/validation.interface.ts:35](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/8991786ca293392fbb1434d450f2a292fb340f1d/src/interfaces/validation.interface.ts#L35)
 
 Name of registered dynamic validator to use
 Dynamic validators have access to the entire form state
@@ -52,7 +52,7 @@ Dynamic validators have access to the entire form state
 
 > `optional` **dynamicValidatorParams**: `Record`\<`string`, `any`\>
 
-Defined in: [interfaces/validation.interface.ts:41](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/da9b373dfdce0655de13c8f4010de07e8f23017d/src/interfaces/validation.interface.ts#L41)
+Defined in: [interfaces/validation.interface.ts:41](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/8991786ca293392fbb1434d450f2a292fb340f1d/src/interfaces/validation.interface.ts#L41)
 
 Parameters for the dynamic validator
 Provides configuration options to the validator
@@ -63,7 +63,7 @@ Provides configuration options to the validator
 
 > `optional` **errorMessage**: `string`
 
-Defined in: [interfaces/validation.interface.ts:47](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/da9b373dfdce0655de13c8f4010de07e8f23017d/src/interfaces/validation.interface.ts#L47)
+Defined in: [interfaces/validation.interface.ts:47](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/8991786ca293392fbb1434d450f2a292fb340f1d/src/interfaces/validation.interface.ts#L47)
 
 Custom error message to display on validation failure
 Overrides default error messages
@@ -74,7 +74,7 @@ Overrides default error messages
 
 > `optional` **max**: `number`
 
-Defined in: [interfaces/validation.interface.ts:22](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/da9b373dfdce0655de13c8f4010de07e8f23017d/src/interfaces/validation.interface.ts#L22)
+Defined in: [interfaces/validation.interface.ts:22](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/8991786ca293392fbb1434d450f2a292fb340f1d/src/interfaces/validation.interface.ts#L22)
 
 Maximum allowed numeric value
 
@@ -84,7 +84,7 @@ Maximum allowed numeric value
 
 > `optional` **maxLength**: `number`
 
-Defined in: [interfaces/validation.interface.ts:16](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/da9b373dfdce0655de13c8f4010de07e8f23017d/src/interfaces/validation.interface.ts#L16)
+Defined in: [interfaces/validation.interface.ts:16](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/8991786ca293392fbb1434d450f2a292fb340f1d/src/interfaces/validation.interface.ts#L16)
 
 Maximum allowed text length
 
@@ -94,7 +94,7 @@ Maximum allowed text length
 
 > `optional` **min**: `number`
 
-Defined in: [interfaces/validation.interface.ts:19](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/da9b373dfdce0655de13c8f4010de07e8f23017d/src/interfaces/validation.interface.ts#L19)
+Defined in: [interfaces/validation.interface.ts:19](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/8991786ca293392fbb1434d450f2a292fb340f1d/src/interfaces/validation.interface.ts#L19)
 
 Minimum allowed numeric value
 
@@ -104,7 +104,7 @@ Minimum allowed numeric value
 
 > `optional` **minLength**: `number`
 
-Defined in: [interfaces/validation.interface.ts:13](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/da9b373dfdce0655de13c8f4010de07e8f23017d/src/interfaces/validation.interface.ts#L13)
+Defined in: [interfaces/validation.interface.ts:13](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/8991786ca293392fbb1434d450f2a292fb340f1d/src/interfaces/validation.interface.ts#L13)
 
 Minimum allowed text length
 
@@ -114,7 +114,7 @@ Minimum allowed text length
 
 > `optional` **pattern**: `string` \| `RegExp`
 
-Defined in: [interfaces/validation.interface.ts:10](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/da9b373dfdce0655de13c8f4010de07e8f23017d/src/interfaces/validation.interface.ts#L10)
+Defined in: [interfaces/validation.interface.ts:10](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/8991786ca293392fbb1434d450f2a292fb340f1d/src/interfaces/validation.interface.ts#L10)
 
 Regular expression pattern for validation
 
@@ -124,6 +124,6 @@ Regular expression pattern for validation
 
 > `optional` **required**: `boolean`
 
-Defined in: [interfaces/validation.interface.ts:7](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/da9b373dfdce0655de13c8f4010de07e8f23017d/src/interfaces/validation.interface.ts#L7)
+Defined in: [interfaces/validation.interface.ts:7](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/8991786ca293392fbb1434d450f2a292fb340f1d/src/interfaces/validation.interface.ts#L7)
 
 Whether the field is required

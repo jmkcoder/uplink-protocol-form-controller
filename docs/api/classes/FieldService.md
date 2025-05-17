@@ -1,4 +1,4 @@
-[**@uplink-protocol/form-controller v0.1.0**](../README.md)
+[**@uplink-protocol/form-controller v0.1.1**](../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Class: FieldService
 
-Defined in: services/field.service.ts:10
+Defined in: [services/field.service.ts:10](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/8991786ca293392fbb1434d450f2a292fb340f1d/src/services/field.service.ts#L10)
 
 Service for managing field validation and errors
 
@@ -16,7 +16,7 @@ Service for managing field validation and errors
 
 > **new FieldService**(`configService`, `formService`, `fieldErrorsService`, `stepsValidityService`): `FieldService`
 
-Defined in: services/field.service.ts:16
+Defined in: [services/field.service.ts:16](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/8991786ca293392fbb1434d450f2a292fb340f1d/src/services/field.service.ts#L16)
 
 #### Parameters
 
@@ -46,7 +46,7 @@ Defined in: services/field.service.ts:16
 
 > **getFieldErrorsService**(): [`BaseService`](BaseService.md)\<`Record`\<`string`, `Record`\<`string`, `string`\>\>\>
 
-Defined in: services/field.service.ts:178
+Defined in: [services/field.service.ts:178](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/8991786ca293392fbb1434d450f2a292fb340f1d/src/services/field.service.ts#L178)
 
 Get the field errors service
 
@@ -62,7 +62,7 @@ Field errors service
 
 > **getStepsValidityService**(): [`BaseService`](BaseService.md)\<`Record`\<`string`, `boolean`\>\>
 
-Defined in: services/field.service.ts:186
+Defined in: [services/field.service.ts:186](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/8991786ca293392fbb1434d450f2a292fb340f1d/src/services/field.service.ts#L186)
 
 Get the steps validity service
 
@@ -78,7 +78,7 @@ Steps validity service
 
 > **validateField**(`stepId`, `fieldId`, `value?`, `showErrors?`): `boolean`
 
-Defined in: services/field.service.ts:36
+Defined in: [services/field.service.ts:36](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/8991786ca293392fbb1434d450f2a292fb340f1d/src/services/field.service.ts#L36)
 
 Validate a single field
 
@@ -120,7 +120,7 @@ Validation result
 
 > **validateForm**(`showErrors`): `boolean`
 
-Defined in: services/field.service.ts:159
+Defined in: [services/field.service.ts:159](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/8991786ca293392fbb1434d450f2a292fb340f1d/src/services/field.service.ts#L159)
 
 Validate all steps in the form
 
@@ -144,7 +144,7 @@ Validation result
 
 > **validateStep**(`stepId`, `showErrors`): `boolean`
 
-Defined in: services/field.service.ts:101
+Defined in: [services/field.service.ts:101](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/8991786ca293392fbb1434d450f2a292fb340f1d/src/services/field.service.ts#L101)
 
 Validate all fields in a step
 

@@ -1,4 +1,4 @@
-[**@uplink-protocol/form-controller v0.1.0**](../README.md)
+[**@uplink-protocol/form-controller v0.1.1**](../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Interface: Field
 
-Defined in: [interfaces/field.interface.ts:7](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/da9b373dfdce0655de13c8f4010de07e8f23017d/src/interfaces/field.interface.ts#L7)
+Defined in: [interfaces/field.interface.ts:7](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/8991786ca293392fbb1434d450f2a292fb340f1d/src/interfaces/field.interface.ts#L7)
 
 Field interface for dynamic form fields.
 Defines the structure and behavior of individual form fields.
@@ -17,7 +17,7 @@ Defines the structure and behavior of individual form fields.
 
 > `optional` **disabled**: `boolean`
 
-Defined in: [interfaces/field.interface.ts:37](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/da9b373dfdce0655de13c8f4010de07e8f23017d/src/interfaces/field.interface.ts#L37)
+Defined in: [interfaces/field.interface.ts:37](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/8991786ca293392fbb1434d450f2a292fb340f1d/src/interfaces/field.interface.ts#L37)
 
 Whether the field is disabled/readonly
 
@@ -27,7 +27,7 @@ Whether the field is disabled/readonly
 
 > `optional` **helperText**: `string`
 
-Defined in: [interfaces/field.interface.ts:31](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/da9b373dfdce0655de13c8f4010de07e8f23017d/src/interfaces/field.interface.ts#L31)
+Defined in: [interfaces/field.interface.ts:31](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/8991786ca293392fbb1434d450f2a292fb340f1d/src/interfaces/field.interface.ts#L31)
 
 Helper text to display below the field
 Useful for providing additional context or instructions
@@ -38,7 +38,7 @@ Useful for providing additional context or instructions
 
 > `optional` **hidden**: `boolean`
 
-Defined in: [interfaces/field.interface.ts:40](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/da9b373dfdce0655de13c8f4010de07e8f23017d/src/interfaces/field.interface.ts#L40)
+Defined in: [interfaces/field.interface.ts:40](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/8991786ca293392fbb1434d450f2a292fb340f1d/src/interfaces/field.interface.ts#L40)
 
 Whether the field should be hidden from view
 
@@ -48,7 +48,7 @@ Whether the field should be hidden from view
 
 > **id**: `string`
 
-Defined in: [interfaces/field.interface.ts:9](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/da9b373dfdce0655de13c8f4010de07e8f23017d/src/interfaces/field.interface.ts#L9)
+Defined in: [interfaces/field.interface.ts:9](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/8991786ca293392fbb1434d450f2a292fb340f1d/src/interfaces/field.interface.ts#L9)
 
 Unique identifier for the field
 
@@ -58,7 +58,7 @@ Unique identifier for the field
 
 > **label**: `string`
 
-Defined in: [interfaces/field.interface.ts:19](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/da9b373dfdce0655de13c8f4010de07e8f23017d/src/interfaces/field.interface.ts#L19)
+Defined in: [interfaces/field.interface.ts:19](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/8991786ca293392fbb1434d450f2a292fb340f1d/src/interfaces/field.interface.ts#L19)
 
 Display label for the field
 
@@ -68,7 +68,7 @@ Display label for the field
 
 > `optional` **options**: `object`[]
 
-Defined in: [interfaces/field.interface.ts:49](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/da9b373dfdce0655de13c8f4010de07e8f23017d/src/interfaces/field.interface.ts#L49)
+Defined in: [interfaces/field.interface.ts:49](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/8991786ca293392fbb1434d450f2a292fb340f1d/src/interfaces/field.interface.ts#L49)
 
 Options for select, radio, and checkbox fields
 Each option has a label, value, and optional disabled state
@@ -91,7 +91,7 @@ Each option has a label, value, and optional disabled state
 
 > `optional` **placeholder**: `string`
 
-Defined in: [interfaces/field.interface.ts:25](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/da9b373dfdce0655de13c8f4010de07e8f23017d/src/interfaces/field.interface.ts#L25)
+Defined in: [interfaces/field.interface.ts:25](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/8991786ca293392fbb1434d450f2a292fb340f1d/src/interfaces/field.interface.ts#L25)
 
 Placeholder text for input fields
 
@@ -101,7 +101,7 @@ Placeholder text for input fields
 
 > `optional` **props**: `Record`\<`string`, `any`\>
 
-Defined in: [interfaces/field.interface.ts:59](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/da9b373dfdce0655de13c8f4010de07e8f23017d/src/interfaces/field.interface.ts#L59)
+Defined in: [interfaces/field.interface.ts:59](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/8991786ca293392fbb1434d450f2a292fb340f1d/src/interfaces/field.interface.ts#L59)
 
 Additional properties for custom fields
 Allows extending field capabilities with custom attributes
@@ -112,7 +112,7 @@ Allows extending field capabilities with custom attributes
 
 > `optional` **required**: `boolean`
 
-Defined in: [interfaces/field.interface.ts:34](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/da9b373dfdce0655de13c8f4010de07e8f23017d/src/interfaces/field.interface.ts#L34)
+Defined in: [interfaces/field.interface.ts:34](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/8991786ca293392fbb1434d450f2a292fb340f1d/src/interfaces/field.interface.ts#L34)
 
 Whether the field is required
 
@@ -122,7 +122,7 @@ Whether the field is required
 
 > **type**: `"number"` \| `"text"` \| `"email"` \| `"password"` \| `"tel"` \| `"checkbox"` \| `"radio"` \| `"select"` \| `"textarea"` \| `"date"` \| `"file"` \| `"custom"`
 
-Defined in: [interfaces/field.interface.ts:15](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/da9b373dfdce0655de13c8f4010de07e8f23017d/src/interfaces/field.interface.ts#L15)
+Defined in: [interfaces/field.interface.ts:15](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/8991786ca293392fbb1434d450f2a292fb340f1d/src/interfaces/field.interface.ts#L15)
 
 The type of input field 
 Controls the UI rendering and validation behavior
@@ -133,7 +133,7 @@ Controls the UI rendering and validation behavior
 
 > `optional` **validation**: [`Validation`](Validation.md)
 
-Defined in: [interfaces/field.interface.ts:43](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/da9b373dfdce0655de13c8f4010de07e8f23017d/src/interfaces/field.interface.ts#L43)
+Defined in: [interfaces/field.interface.ts:43](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/8991786ca293392fbb1434d450f2a292fb340f1d/src/interfaces/field.interface.ts#L43)
 
 Validation rules for the field
 
@@ -143,6 +143,6 @@ Validation rules for the field
 
 > `optional` **value**: `any`
 
-Defined in: [interfaces/field.interface.ts:22](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/da9b373dfdce0655de13c8f4010de07e8f23017d/src/interfaces/field.interface.ts#L22)
+Defined in: [interfaces/field.interface.ts:22](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/8991786ca293392fbb1434d450f2a292fb340f1d/src/interfaces/field.interface.ts#L22)
 
 Initial/default value for the field

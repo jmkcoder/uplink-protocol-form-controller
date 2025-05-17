@@ -1,4 +1,4 @@
-[**@uplink-protocol/form-controller v0.1.0**](../README.md)
+[**@uplink-protocol/form-controller v0.1.1**](../README.md)
 
 ***
 
@@ -8,7 +8,7 @@
 
 > `const` **registerValidator**: (`name`, `validator`) => `void` = `register`
 
-Defined in: [utils/validator-exports.ts:12](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/da9b373dfdce0655de13c8f4010de07e8f23017d/src/utils/validator-exports.ts#L12)
+Defined in: [utils/validator-exports.ts:12](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/8991786ca293392fbb1434d450f2a292fb340f1d/src/utils/validator-exports.ts#L12)
 
 Register a custom dynamic validator
 

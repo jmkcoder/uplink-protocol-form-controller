@@ -8,8 +8,13 @@ module.exports = {
     'jsx'
   ],
   testMatch: [
-    '**/__tests__/**/*.ts',
+    '**/__tests__/**/*.(spec|test).ts',
     '**/?(*.)+(spec|test).ts'
+  ],
+  testPathIgnorePatterns: [
+    '/node_modules/',
+    '/dist/',
+    'test-utils.ts'
   ],
   transform: {
     '^.+\\.(ts|tsx)$': 'ts-jest'

@@ -1,4 +1,4 @@
-[**@uplink-protocol/form-controller v0.1.0**](../README.md)
+[**@uplink-protocol/form-controller v0.1.1**](../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Interface: FormConfig
 
-Defined in: [interfaces/form-config.interface.ts:7](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/da9b373dfdce0655de13c8f4010de07e8f23017d/src/interfaces/form-config.interface.ts#L7)
+Defined in: [interfaces/form-config.interface.ts:7](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/8991786ca293392fbb1434d450f2a292fb340f1d/src/interfaces/form-config.interface.ts#L7)
 
 Form configuration interface.
 Defines the structure and behavior of the entire form.
@@ -17,7 +17,7 @@ Defines the structure and behavior of the entire form.
 
 > `optional` **defaultValues**: `Record`\<`string`, `any`\>
 
-Defined in: [interfaces/form-config.interface.ts:19](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/da9b373dfdce0655de13c8f4010de07e8f23017d/src/interfaces/form-config.interface.ts#L19)
+Defined in: [interfaces/form-config.interface.ts:19](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/8991786ca293392fbb1434d450f2a292fb340f1d/src/interfaces/form-config.interface.ts#L19)
 
 Default values for form fields.
 Keys are field IDs, values are the default values.
@@ -29,7 +29,7 @@ These values will override any default values defined in the field configuration
 
 > **steps**: [`FormStep`](FormStep.md)[]
 
-Defined in: [interfaces/form-config.interface.ts:12](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/da9b373dfdce0655de13c8f4010de07e8f23017d/src/interfaces/form-config.interface.ts#L12)
+Defined in: [interfaces/form-config.interface.ts:12](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/8991786ca293392fbb1434d450f2a292fb340f1d/src/interfaces/form-config.interface.ts#L12)
 
 Array of form steps.
 Each step contains a set of related fields.

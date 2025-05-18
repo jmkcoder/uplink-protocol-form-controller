@@ -1,4 +1,4 @@
-[**@uplink-protocol/form-controller v0.1.1**](../README.md)
+[**@uplink-protocol/form-controller v0.2.0**](../README.md)
 
 ***
 
@@ -8,7 +8,7 @@
 
 > `const` **unregisterValidator**: (`name`) => `boolean` = `unregister`
 
-Defined in: [utils/validator-exports.ts:17](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/3be0707852a25b5a0095411b2a880ebe20f7683e/src/utils/validator-exports.ts#L17)
+Defined in: [utils/validator-exports.ts:17](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/8226087892ff308dad52ba8f951d70bde4dbbb0b/src/utils/validator-exports.ts#L17)
 
 Unregister a dynamic validator
 

@@ -1,4 +1,4 @@
-[**@uplink-protocol/form-controller v0.1.1**](../README.md)
+[**@uplink-protocol/form-controller v0.2.0**](../README.md)
 
 ***
 
@@ -8,7 +8,7 @@
 
 > **FormController**(`config`): `object`
 
-Defined in: [controller.ts:20](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/3be0707852a25b5a0095411b2a880ebe20f7683e/src/controller.ts#L20)
+Defined in: [controller.ts:20](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/8226087892ff308dad52ba8f951d70bde4dbbb0b/src/controller.ts#L20)
 
 DynamicFormStepperController - A controller for multi-step forms with dynamic configuration
 
@@ -108,13 +108,7 @@ A controller instance with bindings and methods for form state management
 
 #### bindings.currentStep.set()
 
-> **set**: (`value`) => `void`
-
-##### Parameters
-
-###### value
-
-[`FormStep`](../interfaces/FormStep.md)
+> **set**: () => `void`
 
 ##### Returns
 
@@ -324,13 +318,7 @@ A controller instance with bindings and methods for form state management
 
 #### bindings.isCurrentStepValid.set()
 
-> **set**: (`value`) => `void`
-
-##### Parameters
-
-###### value
-
-`boolean`
+> **set**: () => `void`
 
 ##### Returns
 
@@ -378,13 +366,7 @@ A controller instance with bindings and methods for form state management
 
 #### bindings.isFirstStep.set()
 
-> **set**: (`value`) => `void`
-
-##### Parameters
-
-###### value
-
-`boolean`
+> **set**: () => `void`
 
 ##### Returns
 
@@ -432,13 +414,7 @@ A controller instance with bindings and methods for form state management
 
 #### bindings.isFormValid.set()
 
-> **set**: (`value`) => `void`
-
-##### Parameters
-
-###### value
-
-`boolean`
+> **set**: () => `void`
 
 ##### Returns
 
@@ -486,13 +462,7 @@ A controller instance with bindings and methods for form state management
 
 #### bindings.isLastStep.set()
 
-> **set**: (`value`) => `void`
-
-##### Parameters
-
-###### value
-
-`boolean`
+> **set**: () => `void`
 
 ##### Returns
 
@@ -594,13 +564,7 @@ A controller instance with bindings and methods for form state management
 
 #### bindings.totalSteps.set()
 
-> **set**: (`value`) => `void`
-
-##### Parameters
-
-###### value
-
-`number`
+> **set**: () => `void`
 
 ##### Returns
 

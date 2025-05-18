@@ -10,7 +10,9 @@ This document provides a comprehensive guide to all validation capabilities in t
 4. [Custom Validators](#custom-validators)
 5. [Validation Context](#validation-context)
 6. [Error Messages](#error-messages)
-7. [Advanced Validation Scenarios](#advanced-validation-scenarios)
+7. [Multiple Error Collection](#multiple-error-collection)
+8. [Enhanced Validation Features](#enhanced-validation-features)
+9. [Advanced Validation Scenarios](#advanced-validation-scenarios)
 
 ## Validation Overview
 
@@ -36,11 +38,43 @@ interface Validation {
   min?: number;
   max?: number;
   custom?: (value: any) => boolean | string;
+  
+  // Legacy dynamic validator (deprecated)
   dynamicValidator?: string;
   dynamicValidatorParams?: Record<string, any>;
+  
+  // Enhanced features
+  dynamicValidators?: Array<{
+    name: string;
+    params?: Record<string, any>;
+    errorMessage?: string;
+  }>;
+  
   errorMessage?: string;
+  errorMessages?: {
+    required?: string;
+    pattern?: string;
+    minLength?: string;
+    maxLength?: string;
+    min?: string;
+    max?: string;
+    email?: string;
+    custom?: string;
+  };
+  collectAllErrors?: boolean;
 }
 ```
+
+### Validation Priority
+
+Validation rules are evaluated in the following order:
+
+1. **Required validation**: Always checked first, regardless of validation order.
+2. **Type-specific validations**: Based on field type (email, pattern, length, numeric range, etc.)
+3. **Custom validation**: User-defined validation functions.
+4. **Dynamic validation**: Context-aware validation using registered validators.
+
+By default, validation stops on the first error encountered. To collect all validation errors, see the [Multiple Error Collection](#multiple-error-collection) section.
 
 ## Built-in Validators
 
@@ -153,6 +187,7 @@ Dynamic validators can access the entire form state and react to other field val
 Makes a field required based on conditions:
 
 ```javascript
+// Legacy approach (deprecated)
 {
   id: 'otherReason',
   type: 'text',
@@ -167,6 +202,26 @@ Makes a field required based on conditions:
     }
   }
 }
+
+// New approach with dynamicValidators array
+{
+  id: 'otherReason',
+  type: 'text',
+  label: 'Please specify',
+  validation: {
+    dynamicValidators: [
+      {
+        name: 'requiredIf',
+        params: {
+          condition: 'equals',
+          fields: ['reason'],
+          value: 'other'
+        },
+        errorMessage: 'Please specify the reason'
+      }
+    ]
+  }
+}
 ```
 
 Supported conditions:
@@ -179,6 +234,7 @@ Supported conditions:
 Validates that a field equals a specific value or another field's value:
 
 ```javascript
+// Legacy approach (deprecated)
 {
   id: 'confirmPassword',
   type: 'password',
@@ -187,6 +243,61 @@ Validates that a field equals a specific value or another field's value:
     dynamicValidator: 'equals',
     dynamicValidatorParams: {
       targetField: 'password',
+      errorMessage: 'Passwords do not match'
+    }
+  }
+}
+
+// New approach with dynamicValidators array
+{
+  id: 'confirmPassword',
+  type: 'password',
+  label: 'Confirm Password',
+  validation: {
+    dynamicValidators: [
+      {
+        name: 'equals',
+        params: {
+          targetField: 'password'
+        },
+        errorMessage: 'Passwords do not match'
+      }
+    ]
+  }
+}
+```
+
+### Multiple Dynamic Validators
+
+You can apply multiple dynamic validators to a single field:
+
+```javascript
+{
+  id: 'username',
+  type: 'text',
+  label: 'Username',
+  validation: {
+    required: true,
+    minLength: 3,
+    dynamicValidators: [
+      {
+        name: 'uniqueUsername',
+        params: { checkDatabase: true },
+        errorMessage: 'This username is already taken'
+      },
+      {
+        name: 'noSpecialChars',
+        errorMessage: 'Username cannot contain special characters'
+      }
+    ],
+    collectAllErrors: true
+  }
+}
+```
+
+### Custom Dynamic Validators
+
+You can create and register your own dynamic validators:
       errorMessage: 'Passwords must match'
     }
   }
@@ -275,6 +386,28 @@ If no custom message is provided, the validator generates a default message.
 }
 ```
 
+### Per-Validation Error Messages
+
+You can specify different error messages for each type of validation:
+
+```javascript
+{
+  id: 'password',
+  type: 'password',
+  label: 'Password',
+  validation: {
+    required: true,
+    minLength: 8,
+    pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/,
+    errorMessages: {
+      required: 'Password is required',
+      minLength: 'Password must be at least 8 characters long',
+      pattern: 'Password must include uppercase, lowercase, and numbers'
+    }
+  }
+}
+```
+
 ### Error Messages from Validator Functions
 
 ```javascript
@@ -288,6 +421,7 @@ validation: {
 
 ### Error Messages from Dynamic Validators
 
+For legacy dynamic validators:
 ```javascript
 validation: {
   dynamicValidator: 'requiredIf',
@@ -297,6 +431,174 @@ validation: {
   }
 }
 ```
+
+For new multiple dynamic validators:
+```javascript
+validation: {
+  dynamicValidators: [
+    {
+      name: 'uniqueUsername',
+      params: { checkExisting: true },
+      errorMessage: 'This username is already taken'
+    }
+  ]
+}
+```
+
+## Multiple Error Collection
+
+By default, validation stops at the first error encountered. However, you can configure fields to collect all validation errors by using the `collectAllErrors` flag:
+
+```javascript
+{
+  id: 'password',
+  type: 'password',
+  label: 'Password',
+  validation: {
+    required: true,
+    minLength: 8,
+    pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/,
+    custom: (value) => {
+      if (value.includes('password')) {
+        return 'Password should not contain the word "password"';
+      }
+      return true;
+    },
+    collectAllErrors: true // Enable collecting all validation errors
+  }
+}
+```
+
+### Benefits of Multiple Error Collection
+
+- **Improved UX**: Users can see all validation issues at once
+- **Efficient Form Completion**: Reduces the number of submission attempts
+- **Comprehensive Feedback**: Especially useful for complex fields
+
+### Accessing Multiple Errors
+
+When validating a field programmatically, you can access all collected errors:
+
+```javascript
+// In custom code that uses the validator directly
+const result = validateField(field, value, context);
+if (!result.isValid) {
+  console.log('First error:', result.error);
+  console.log('All errors:', result.errors);
+}
+```
+
+For more details, see the [Multiple Errors Validation](./multiple-errors-validation.md) documentation.
+
+## Enhanced Validation Features
+
+The form-controller provides enhanced validation capabilities that make it easier to build sophisticated forms with rich validation feedback.
+
+### Per-Validation Error Messages
+
+You can specify different error messages for each validation rule using the `errorMessages` object:
+
+```javascript
+{
+  id: 'password',
+  type: 'password',
+  label: 'Password',
+  validation: {
+    required: true,
+    minLength: 8,
+    pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/,
+    errorMessages: {
+      required: 'Password is required',
+      minLength: 'Password must be at least 8 characters long',
+      pattern: 'Password must include uppercase, lowercase, and numbers'
+    }
+  }
+}
+```
+
+The supported error message keys include:
+- `required`: For required field validation
+- `pattern`: For pattern/regex validation
+- `minLength`: For minimum text length validation
+- `maxLength`: For maximum text length validation
+- `min`: For minimum numeric value validation
+- `max`: For maximum numeric value validation
+- `email`: For email format validation
+- `custom`: For custom validation functions
+
+### Multiple Dynamic Validators
+
+You can apply multiple dynamic validators to a single field:
+
+```javascript
+{
+  id: 'username',
+  type: 'text',
+  label: 'Username',
+  validation: {
+    required: true,
+    dynamicValidators: [
+      {
+        name: 'uniqueUsername',
+        params: { checkDatabase: true },
+        errorMessage: 'This username is already taken'
+      },
+      {
+        name: 'noSpecialChars',
+        errorMessage: 'Username cannot contain special characters'
+      }
+    ]
+  }
+}
+```
+
+Each validator in the array can have:
+- `name`: The registered validator name
+- `params`: Custom parameters for the validator
+- `errorMessage`: Specific error message for this validator
+
+### Combining Enhanced Features
+
+You can combine all enhanced validation features for maximum flexibility:
+
+```javascript
+{
+  id: 'password',
+  type: 'password',
+  label: 'Password',
+  validation: {
+    required: true,
+    minLength: 8,
+    pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/,
+    
+    // Per-validation error messages
+    errorMessages: {
+      required: 'Password is required',
+      minLength: 'Password must be at least 8 characters',
+      pattern: 'Password must include uppercase, lowercase, and numbers'
+    },
+    
+    // Multiple dynamic validators with custom parameters
+    dynamicValidators: [
+      {
+        name: 'passwordStrength',
+        params: { minStrength: 3 },
+        errorMessage: 'Your password is too weak'
+      },
+      {
+        name: 'notPreviouslyUsed',
+        params: { historyCheck: true },
+        errorMessage: 'You cannot reuse a previous password'
+      }
+    ],
+    
+    // Collect all validation errors
+    collectAllErrors: true
+  }
+}
+```
+
+See the [Multiple Errors Validation](./multiple-errors-validation.md) document for more examples and best practices.
 
 ## Advanced Validation Scenarios
 

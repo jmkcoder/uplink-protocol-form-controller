@@ -1,4 +1,4 @@
-[**@uplink-protocol/form-controller v0.1.1**](../README.md)
+[**@uplink-protocol/form-controller v0.2.0**](../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Class: ValidatorService
 
-Defined in: [services/validator.service.ts:6](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/3be0707852a25b5a0095411b2a880ebe20f7683e/src/services/validator.service.ts#L6)
+Defined in: [services/validator.service.ts:6](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/8226087892ff308dad52ba8f951d70bde4dbbb0b/src/services/validator.service.ts#L6)
 
 Service for managing dynamic validators
 
@@ -16,7 +16,7 @@ Service for managing dynamic validators
 
 > **new ValidatorService**(): `ValidatorService`
 
-Defined in: [services/validator.service.ts:7](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/3be0707852a25b5a0095411b2a880ebe20f7683e/src/services/validator.service.ts#L7)
+Defined in: [services/validator.service.ts:7](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/8226087892ff308dad52ba8f951d70bde4dbbb0b/src/services/validator.service.ts#L7)
 
 #### Returns
 
@@ -28,7 +28,7 @@ Defined in: [services/validator.service.ts:7](https://github.com/jmkcoder/uplink
 
 > **getAvailableValidators**(): `string`[]
 
-Defined in: [services/validator.service.ts:33](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/3be0707852a25b5a0095411b2a880ebe20f7683e/src/services/validator.service.ts#L33)
+Defined in: [services/validator.service.ts:33](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/8226087892ff308dad52ba8f951d70bde4dbbb0b/src/services/validator.service.ts#L33)
 
 Get all available validators
 
@@ -44,7 +44,7 @@ List of predefined validators
 
 > **registerValidator**(`name`, `validatorFn`): `void`
 
-Defined in: [services/validator.service.ts:14](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/3be0707852a25b5a0095411b2a880ebe20f7683e/src/services/validator.service.ts#L14)
+Defined in: [services/validator.service.ts:14](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/8226087892ff308dad52ba8f951d70bde4dbbb0b/src/services/validator.service.ts#L14)
 
 Register a dynamic validator
 
@@ -72,7 +72,7 @@ Validator function
 
 > **unregisterValidator**(`name`): `boolean`
 
-Defined in: [services/validator.service.ts:24](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/3be0707852a25b5a0095411b2a880ebe20f7683e/src/services/validator.service.ts#L24)
+Defined in: [services/validator.service.ts:24](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/8226087892ff308dad52ba8f951d70bde4dbbb0b/src/services/validator.service.ts#L24)
 
 Unregister a dynamic validator
 

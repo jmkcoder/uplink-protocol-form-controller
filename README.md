@@ -3,6 +3,8 @@
 A lightweight yet powerful form management system for building dynamic, multi-step forms with advanced validation capabilities. This module is part of the Odyssey Uplink Protocol.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![npm version](https://img.shields.io/npm/v/@uplink-protocol/form-controller.svg)](https://www.npmjs.com/package/@uplink-protocol/form-controller)
+[![Latest Release](https://img.shields.io/github/v/release/jmkcoder/uplink-protocol-form-controller)](https://github.com/jmkcoder/uplink-protocol-form-controller/releases)
 
 ## Features
 
@@ -19,6 +21,15 @@ A lightweight yet powerful form management system for building dynamic, multi-st
 ```bash
 npm install @uplink-protocol/form-controller
 ```
+
+## Latest Release Highlights - v0.2.0
+
+- **Multiple Error Collection**: Collect and display multiple validation errors for a single field
+- **Enhanced Validation System**: Custom error messages for each validation rule
+- **Improved Dynamic Form Modification**: Better API for runtime form structure changes
+- **Performance Optimizations**: Reduced unnecessary re-renders and state changes
+
+[View full release notes](./docs/release-notes-v0.2.0.md)
 
 ## Basic Usage
 

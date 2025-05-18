@@ -120,7 +120,7 @@ export const FormController = (config: FormConfig) => {
             unsubscribeConfig();
           };
         },
-        set: function (value: FormStep) {
+        set: function () {
           // This is a computed property, so setting directly does nothing
           console.warn(
             "Cannot directly set currentStep as it's computed from currentStepIndex"
@@ -186,7 +186,7 @@ export const FormController = (config: FormConfig) => {
             unsubscribeValidity();
           };
         },
-        set: function (value: boolean) {
+        set: function () {
           // This is a computed property, so setting directly does nothing
           console.warn(
             "Cannot directly set isCurrentStepValid as it's computed"
@@ -227,7 +227,7 @@ export const FormController = (config: FormConfig) => {
           
           return unsubscribe;
         },
-        set: function (value: number) {
+        set: function () {
           // This is a computed property, so setting it directly does nothing
           console.warn(
             "Cannot directly set totalSteps as it's computed from config"
@@ -265,7 +265,7 @@ export const FormController = (config: FormConfig) => {
             unsubscribeTotal();
           };
         },
-        set: function (value: boolean) {
+        set: function () {
           // This is a computed property, so setting directly does nothing
         },
       },
@@ -287,7 +287,7 @@ export const FormController = (config: FormConfig) => {
 
           return unsubscribe;
         },
-        set: function (value: boolean) {
+        set: function () {
           // This is a computed property, so setting directly does nothing
         },
       },
@@ -326,7 +326,7 @@ export const FormController = (config: FormConfig) => {
             unsubscribeConfig();
           };
         },
-        set: function (value: boolean) {
+        set: function () {
           // This is a computed property, so setting directly does nothing
         },
       },

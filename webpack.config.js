@@ -1,41 +1,4 @@
 const path = require('path');
-const fs = require('fs');
-const { execSync } = require('child_process');
-
-// Custom plugin to generate description and TypeScript declarations
-class UplinkDescriptionPlugin {
-  apply(compiler) {
-    compiler.hooks.done.tap('UplinkDescriptionPlugin', (stats) => {
-      const uplinkConfig = require('./uplink.config.json');
-      const packageJson = require('./package.json');
-      
-      // Generate description from the controller
-      const controllerPath = path.resolve(__dirname, uplinkConfig.entry);
-      const content = fs.readFileSync(controllerPath, 'utf-8');
-      
-      // Extract class description if present
-      const description = content.match(/\/\*\*[\s\S]*?\*\//)
-        ? content.match(/\/\*\*[\s\S]*?\*\//)[0]
-        : uplinkConfig.description || packageJson.description || '';
-
-      // Update uplink.config.json with the description
-      uplinkConfig.description = description.replace(/\/\*\*|\*\/|\*/g, '').trim();
-      fs.writeFileSync('./uplink.config.json', JSON.stringify(uplinkConfig, null, 2));
-      
-      // Generate TypeScript declaration files with documentation
-      console.log('Generating TypeScript declaration files with documentation...');
-      try {
-        execSync('npx tsc --declaration --emitDeclarationOnly --outDir ./dist/types', { stdio: 'inherit' });
-        
-        // Generate API documentation using TypeDoc
-        console.log('Generating API documentation with TypeDoc...');
-        execSync('npx typedoc --options typedoc.json', { stdio: 'inherit' });
-      } catch (error) {
-        console.error('Error generating TypeScript declarations or documentation:', error);
-      }
-    });
-  }
-}
 
 module.exports = {
   entry: './src/index.ts',
@@ -43,29 +6,48 @@ module.exports = {
     path: path.resolve(__dirname, 'dist'),
     filename: 'index.js',
     library: {
-      name: '@uplink-protocol/form-controller',
-      type: 'umd',
-      umdNamedDefine: true,
+      type: 'module'
     },
-    globalObject: 'this'
+    module: true,
+    clean: true
   },
-  resolve: {
-    extensions: ['.ts', '.js'],
+  experiments: {
+    outputModule: true
   },
   module: {
     rules: [
       {
-        test: /\.ts$/,
-        use: 'ts-loader',
-        exclude: /node_modules/,
-      },
-    ],
+        test: /\.(ts|tsx)$/,
+        use: [
+          {
+            loader: 'ts-loader',
+            options: {
+              configFile: path.resolve(__dirname, 'tsconfig.json'),
+              transpileOnly: false,
+              compilerOptions: {
+                declaration: true,
+                declarationDir: './dist',
+                outDir: './dist'
+              }
+            }
+          }
+        ],
+        exclude: /node_modules/
+      }
+    ]
   },
-  plugins: [
-    new UplinkDescriptionPlugin()
-  ],
-  mode: 'production',
-  optimization: {
-    minimize: true
-  }
+  resolve: {
+    extensions: ['.ts', '.tsx', '.js', '.jsx'],
+    alias: {
+      '@uplink-protocol/core': path.resolve(__dirname, '../../src')
+    }
+  },
+  externals: {
+    '@uplink-protocol/core': '@uplink-protocol/core',
+    'react': 'react',
+    'react-dom': 'react-dom',
+    'react-scripts': 'react-scripts',
+  },
+  devtool: 'source-map',
+  mode: 'production'
 };

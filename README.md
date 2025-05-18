@@ -9,6 +9,7 @@ A lightweight yet powerful form management system for building dynamic, multi-st
 - **Flexible Form Structure** - Support for both single-step and multi-step forms
 - **Built-in Validation** - Comprehensive validation rules out of the box
 - **Dynamic Validation** - Context-aware validators that can react to other field values
+- **Enhanced Validation** - Support for multiple validation errors and per-validation error messages
 - **Reactive State Management** - Subscribe to state changes for reactive UI updates
 - **Progressive Form Building** - Add or remove steps dynamically
 - **Framework Agnostic** - Works with any UI library or vanilla JavaScript
@@ -125,6 +126,53 @@ const confirmPasswordField = {
   label: 'Confirm Password',
   validation: {
     dynamicValidator: 'matchesPassword'
+  }
+};
+```
+
+## Enhanced Validation
+
+```javascript
+// Field with per-validation error messages
+const passwordField = {
+  id: 'password',
+  type: 'password',
+  label: 'Password',
+  validation: {
+    required: true,
+    minLength: 8,
+    pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/,
+    // Specific error messages for each validation rule
+    errorMessages: {
+      required: 'Password is required',
+      minLength: 'Password must be at least 8 characters long',
+      pattern: 'Password must include uppercase, lowercase, and numbers'
+    },
+    // Enable multiple error collection
+    collectAllErrors: true
+  }
+};
+
+// Field with multiple dynamic validators
+const usernameField = {
+  id: 'username',
+  type: 'text',
+  label: 'Username',
+  validation: {
+    required: true,
+    // Multiple dynamic validators with custom parameters
+    dynamicValidators: [
+      {
+        name: 'uniqueUsername', 
+        params: { checkDatabase: true },
+        errorMessage: 'This username is already taken'
+      },
+      {
+        name: 'allowedCharacters',
+        errorMessage: 'Username can only contain letters, numbers, and underscores'
+      }
+    ],
+    collectAllErrors: true
   }
 };
 ```

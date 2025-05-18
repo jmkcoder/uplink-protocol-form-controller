@@ -72,18 +72,35 @@ export const getValidator = (name: string): DynamicValidator | undefined => {
  * @param name Name of the validator to run
  * @param value The value to validate
  * @param context Context information for validation
+ * @param params Optional parameters to pass to the validator
  * @returns The result of the validation - true/string for valid/invalid
  */
 export const runValidator = (
   name: string,
   value: any,
-  context: ValidatorContext
+  context: ValidatorContext,
+  params?: Record<string, any>
 ): boolean | string => {
   const validator = validatorRegistry[name];
   if (!validator) {
     console.warn(`Validator '${name}' not found.`);
     return true;
   }
+  
+  // Merge params into context if provided
+  if (params) {
+    context = {
+      ...context,
+      field: {
+        ...context.field,
+        validation: {
+          ...context.field.validation,
+          dynamicValidatorParams: params
+        }
+      }
+    };
+  }
+  
   return validator(value, context);
 };
 

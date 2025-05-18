@@ -69,36 +69,69 @@ const handleSubmit = () => {
 };
 ```
 
-## Custom Validators with TypeScript
+## Enhanced Validation with TypeScript
 
 ```typescript
-import { DynamicValidator, ValidatorContext } from '@uplink-protocol/form-controller';
-
-// Create a strongly-typed custom validator
-const passwordStrengthValidator: DynamicValidator = (value, context: ValidatorContext) => {
-  if (!value) return true;
-  
-  // Type-safe access to context properties
-  const { formData, field } = context;
-  
-  let strength = 0;
-  
-  // Length check
-  if (value.length >= 8) strength += 1;
-  
-  // Complexity checks
-  if (/[A-Z]/.test(value)) strength += 1;
-  if (/[a-z]/.test(value)) strength += 1;
-  if (/[0-9]/.test(value)) strength += 1;
-  if (/[^A-Za-z0-9]/.test(value)) strength += 1;
-  
-  // Return appropriate message based on strength
-  if (strength < 3) {
-    return 'Password must contain at least 8 characters with a mix of uppercase, lowercase, numbers, and special characters';
+// Define a field with enhanced validation features
+const passwordField: Field = {
+  id: 'password',
+  type: 'password',
+  label: 'Password',
+  validation: {
+    required: true,
+    minLength: 8,
+    pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/,
+    // Type-safe per-validation error messages
+    errorMessages: {
+      required: 'Password is required',
+      minLength: 'Password must be at least 8 characters long',
+      pattern: 'Password must include uppercase, lowercase, and numbers'
+    },
+    // Multiple dynamic validators with typed parameters
+    dynamicValidators: [
+      {
+        name: 'passwordStrength',
+        params: {
+          minStrength: 3,
+          checkCommonPasswords: true
+        },
+        errorMessage: 'Your password is too weak'
+      },
+      {
+        name: 'notPreviouslyUsed',
+        params: {
+          checkHistory: true
+        },
+        errorMessage: 'You cannot reuse a previous password'
+      }
+    ],
+    collectAllErrors: true
   }
-  
-  return true;
 };
+
+// Register the validators with proper TypeScript types
+form.methods.registerValidator(
+  'passwordStrength',
+  (value: string, context: ValidatorContext) => {
+    // Implementation details...
+    const { minStrength } = context.field.validation?.dynamicValidators?.[0].params || {};
+    return true;
+  }
+);
+
+// Validate and access all errors
+const validatePasswordField = (value: string) => {
+  const result = form.methods.validateField('account', 'password', value);
+  
+  if (!result) {
+    // Get errors from the fieldErrors binding
+    const errors = form.bindings.fieldErrors.current.account?.password;
+    // With collectAllErrors, this might contain multiple errors separated by ' | '
+    const errorsList = errors?.split(' | ');
+    console.error('Password validation errors:', errorsList);
+  }
+};
+```
 
 // Register the validator
 form.methods.registerValidator('passwordStrength', passwordStrengthValidator);

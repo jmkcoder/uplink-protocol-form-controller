@@ -53,5 +53,5 @@ export function createMockFormConfig(numSteps = 2): FormConfig {
  * Creates a test validator function
  */
 export function createTestValidator(shouldPass: boolean, errorMessage = 'Test validation error') {
-  return (value: any) => shouldPass ? true : errorMessage;
+  return () => shouldPass ? true : errorMessage;
 }

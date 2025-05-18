@@ -99,7 +99,6 @@ export class InteractionService {
     if (!step) return false;
 
     let isStepValid = true;
-    const stepData = this.configService.getStepById(stepId);
 
     // Validate each field in the step
     Object.keys(step.fields).forEach((fieldId) => {

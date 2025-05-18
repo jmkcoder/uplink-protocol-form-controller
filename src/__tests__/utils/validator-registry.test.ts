@@ -1,6 +1,5 @@
 import { runValidator, ValidatorContext } from '../../utils/validator-registry';
 import { Field } from '../../interfaces/field.interface';
-import { Validation } from '../../interfaces/validation.interface';
 
 describe('Validator Registry', () => {
   // Helper function to create a mock validator context

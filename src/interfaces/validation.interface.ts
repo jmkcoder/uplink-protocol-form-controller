@@ -31,18 +31,63 @@ export interface Validation {
   /** 
    * Name of registered dynamic validator to use
    * Dynamic validators have access to the entire form state
+   * @deprecated Use dynamicValidators array instead for multiple validators
    */
   dynamicValidator?: string;
   
   /**
    * Parameters for the dynamic validator
    * Provides configuration options to the validator
+   * @deprecated Use dynamicValidators array instead
    */
   dynamicValidatorParams?: Record<string, any>;
   
+  /**
+   * Array of dynamic validators to use
+   * Each validator can have its own parameters and error message
+   */
+  dynamicValidators?: Array<{
+    /** Name of registered validator */
+    name: string;
+    /** Parameters to pass to the validator */
+    params?: Record<string, any>;
+    /** Custom error message for this validator */
+    errorMessage?: string;
+  }>;
+  
   /** 
    * Custom error message to display on validation failure
-   * Overrides default error messages
+   * Overrides default error messages for all validations
+   * Use errorMessages for specific error messages per validation type
    */
   errorMessage?: string;
+  
+  /**
+   * Custom error messages for specific validation types
+   * Allows specifying different messages for each validation rule
+   */
+  errorMessages?: {
+    /** Error message for required validation */
+    required?: string;
+    /** Error message for pattern validation */
+    pattern?: string;
+    /** Error message for minLength validation */
+    minLength?: string;
+    /** Error message for maxLength validation */
+    maxLength?: string;
+    /** Error message for min validation */
+    min?: string;
+    /** Error message for max validation */
+    max?: string;
+    /** Error message for email validation */
+    email?: string;
+    /** Error message for custom validation (if not returned by the function) */
+    custom?: string;
+  };
+  
+  /**
+   * Whether to collect all validation errors instead of stopping at the first one
+   * This is useful for showing multiple validation errors at once
+   */
+  collectAllErrors?: boolean;
 }

@@ -59,17 +59,17 @@ describe('Test Utilities', () => {
   describe('createTestValidator', () => {
     test('should create a passing validator', () => {
       const validator = createTestValidator(true);
-      expect(validator('any value')).toBe(true);
+      expect(validator()).toBe(true);
     });
 
     test('should create a failing validator with default error message', () => {
       const validator = createTestValidator(false);
-      expect(validator('any value')).toBe('Test validation error');
+      expect(validator()).toBe('Test validation error');
     });
 
     test('should create a failing validator with custom error message', () => {
       const validator = createTestValidator(false, 'Custom error');
-      expect(validator('any value')).toBe('Custom error');
+      expect(validator()).toBe('Custom error');
     });
   });
 });

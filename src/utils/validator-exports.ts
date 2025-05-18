@@ -24,4 +24,4 @@ export const getAvailableValidators = () => predefinedValidators;
 /**
  * Type for dynamic validator function
  */
-export { DynamicValidator };
+export type { DynamicValidator };

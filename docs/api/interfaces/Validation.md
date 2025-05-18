@@ -6,12 +6,23 @@
 
 # Interface: Validation
 
-Defined in: [interfaces/validation.interface.ts:5](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/3be0707852a25b5a0095411b2a880ebe20f7683e/src/interfaces/validation.interface.ts#L5)
+Defined in: [interfaces/validation.interface.ts:5](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/main/src/interfaces/validation.interface.ts#L5)
 
 Validation interface defining rules for form field validation.
 Supports both static and dynamic validation approaches.
 
 ## Properties
+
+### collectAllErrors?
+
+> `optional` **collectAllErrors**: `boolean`
+
+Defined in: [interfaces/validation.interface.ts:47](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/main/src/interfaces/validation.interface.ts#L47)
+
+Whether to collect all validation errors instead of stopping at the first one
+This is useful for showing multiple validation errors at once
+
+***
 
 ### custom()?
 

@@ -1,7 +1,6 @@
 import { BaseService } from './base.service';
 import { ConfigService } from './config.service';
 import { FormService } from './form.service';
-import { Field } from '../interfaces/field.interface';
 import { validateField } from '../utils/validator';
 
 /**
@@ -50,9 +49,7 @@ export class FieldService {
     const fieldValue =
       value !== undefined
         ? value
-        : this.formService.get()[stepId]?.[fieldId];
-
-    // Create context for dynamic validators
+        : this.formService.get()[stepId]?.[fieldId];    // Create context for dynamic validators
     const validationContext = {
       field,
       fieldId,
@@ -60,8 +57,11 @@ export class FieldService {
       formData: this.formService.get()[stepId] || {},
     };
 
+    // Check if we should collect all errors
+    const collectAllErrors = field.validation?.collectAllErrors === true;
+
     // Validate the field with context
-    const result = validateField(field, fieldValue, validationContext);
+    const result = validateField(field, fieldValue, validationContext, collectAllErrors);
 
     // Only update errors if showErrors is true
     if (showErrors) {
@@ -74,8 +74,14 @@ export class FieldService {
         // Remove error if valid
         delete errors[stepId][fieldId];
       } else {
-        // Add error message
-        errors[stepId][fieldId] = result.error || "Invalid field";
+        // Add error message(s)
+        if (result.errors && result.errors.length > 1 && collectAllErrors) {
+          // If we're collecting all errors, join them with a separator
+          errors[stepId][fieldId] = result.errors.join(' | ');
+        } else {
+          // Otherwise just use the first error
+          errors[stepId][fieldId] = result.error || "Invalid field";
+        }
       }
 
       this.fieldErrorsService.set(errors);

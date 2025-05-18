@@ -1,6 +1,4 @@
 import { BaseService } from './base.service';
-import { FormConfig } from '../interfaces/form-config.interface';
-import { FormStep } from '../interfaces/form-step.interface';
 import { ConfigService } from './config.service';
 
 /**
@@ -9,7 +7,6 @@ import { ConfigService } from './config.service';
 export class FormService extends BaseService<Record<string, Record<string, any>>> {
   private configService: ConfigService;
   private fieldErrorsService: BaseService<Record<string, Record<string, string>>>;
-  private stepsValidityService: BaseService<Record<string, boolean>>;
 
   constructor(
     initialFormData: Record<string, Record<string, any>>, 
@@ -20,7 +17,7 @@ export class FormService extends BaseService<Record<string, Record<string, any>>
     super(initialFormData);
     this.configService = configService;
     this.fieldErrorsService = fieldErrorsService;
-    this.stepsValidityService = stepsValidityService;
+    stepsValidityService = stepsValidityService;
   }
 
   /**

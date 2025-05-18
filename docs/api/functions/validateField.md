@@ -6,9 +6,9 @@
 
 # Function: validateField()
 
-> **validateField**(`field`, `value`, `context?`): `object`
+> **validateField**(`field`, `value`, `context?`, `collectAllErrors?`): `object`
 
-Defined in: [utils/validator.ts:12](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/3be0707852a25b5a0095411b2a880ebe20f7683e/src/utils/validator.ts#L12)
+Defined in: [utils/validator.ts:15](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/main/src/utils/validator.ts#L15)
 
 Validates a field value based on its validation rules
 
@@ -32,16 +32,32 @@ The value to validate
 
 Additional context for dynamic validators
 
+### collectAllErrors?
+
+`boolean`
+
+Whether to collect all errors or stop at the first one (defaults to value of field.validation.collectAllErrors or false)
+
 ## Returns
 
 `object`
 
-An object containing isValid and error message if any
+An object containing isValid and error message(s) if any
 
 ### error?
 
 > `optional` **error**: `string`
 
+The first error message or primary error
+
+### errors?
+
+> `optional` **errors**: `string[]`
+
+Array of all validation error messages (only present when validation fails and collectAllErrors is true)
+
 ### isValid
 
 > **isValid**: `boolean`
+
+Whether the field passed all validations

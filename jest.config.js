@@ -20,6 +20,7 @@ module.exports = {
     '^.+\\.(ts|tsx)$': 'ts-jest'
   },
   moduleNameMapper: {
-    '^@/(.*)$': '<rootDir>/src/$1'
+    '^@/(.*)$': '<rootDir>/src/$1',
+    '^@uplink-protocol/core$': '<rootDir>/src/__mocks__/@uplink-protocol/core.ts'
   }
 };

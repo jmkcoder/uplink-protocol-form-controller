@@ -1,8 +1,8 @@
-[**@uplink-protocol/form-controller v0.2.0**](README.md)
+[**@uplink-protocol/form-controller v0.2.5**](README.md)
 
 ***
 
-# @uplink-protocol/form-controller v0.2.0
+# @uplink-protocol/form-controller v0.2.5
 
 @uplink-protocol/form-controller
 

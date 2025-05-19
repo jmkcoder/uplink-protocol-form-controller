@@ -1,4 +1,4 @@
-[**@uplink-protocol/form-controller v0.2.0**](../README.md)
+[**@uplink-protocol/form-controller v0.2.5**](../README.md)
 
 ***
 
@@ -8,7 +8,7 @@
 
 > **validateField**(`field`, `value`, `context?`, `collectAllErrors?`): `object`
 
-Defined in: [utils/validator.ts:13](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/8226087892ff308dad52ba8f951d70bde4dbbb0b/src/utils/validator.ts#L13)
+Defined in: [utils/validator.ts:13](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/dd3b5a64ac66f6e3d93aa3a73dfcfe7109a8afc2/src/utils/validator.ts#L13)
 
 Validates a field value based on its validation rules
 

@@ -11,7 +11,6 @@ import {
   StepperService,
   ValidatorService
 } from "./services";
-import { createBindings } from "@uplink-protocol/core";
 
 /**
  * DynamicFormStepperController - A controller for multi-step forms with dynamic configuration
@@ -65,20 +64,273 @@ export const FormController = (config: FormConfig) => {
 
   // Initialize controller with reactive bindings system
   const controller = {
-    bindings: createBindings(
-      {
-        config: config,
-        currentStepIndex: 0,
-        currentStep: config.steps[0],
-        formData: initialFormData,
-        stepsValidity: stepValidationState,
-        fieldErrors: {},
-        totalSteps: config.steps.length,
-        isLastStep: config.steps.length === 1,
-        isFirstStep: true,
-        isFormValid: false,
-      }
-    ),
+    bindings: {
+      // Form configuration
+      config: {
+        current: config,
+        _callbacks: [] as ((value: FormConfig) => void)[],
+        subscribe: function (callback: (value: FormConfig) => void) {
+          return configService.subscribe(callback);
+        },
+        set: function (value: FormConfig) {
+          configService.set(value);
+        },
+      },
+
+      // Track the current step index
+      currentStepIndex: {
+        current: 0,
+        _callbacks: [] as ((value: number) => void)[],
+        subscribe: function (callback: (value: number) => void) {
+          return stepperService.subscribe(callback);
+        },
+        set: function (value: number) {
+          stepperService.set(value);
+        },
+      },
+
+      // Current step object
+      currentStep: {
+        current: config.steps[0],
+        _callbacks: [] as ((value: FormStep) => void)[],
+        subscribe: function (callback: (value: FormStep) => void) {
+          // Create a computed property that depends on both currentStepIndex and config
+          const unsubscribeIndex = stepperService.subscribe((stepIndex) => {
+            const currentStep = configService.getStepByIndex(stepIndex);
+            if (currentStep) {
+              callback(currentStep);
+              this.current = currentStep;
+            }
+          });
+
+          // Also listen for config changes
+          const unsubscribeConfig = configService.subscribe((newConfig) => {
+            const currentStep = newConfig.steps[stepperService.get()];
+            if (currentStep) {
+              callback(currentStep);
+              this.current = currentStep;
+            }
+          });
+
+          // Initialize with current value
+          callback(this.current);
+
+          return () => {
+            unsubscribeIndex();
+            unsubscribeConfig();
+          };
+        },
+        set: function () {
+          // This is a computed property, so setting directly does nothing
+          console.warn(
+            "Cannot directly set currentStep as it's computed from currentStepIndex"
+          );
+        },
+      },
+
+      // Form data for all steps
+      formData: {
+        current: initialFormData,
+        _callbacks: [] as ((
+          value: Record<string, Record<string, any>>
+        ) => void)[],
+        subscribe: function (
+          callback: (value: Record<string, Record<string, any>>) => void
+        ) {
+          return formService.subscribe(callback);
+        },
+        set: function (value: Record<string, Record<string, any>>) {
+          formService.set(value);
+        },
+      },
+
+      // Track step validity
+      stepsValidity: {
+        current: stepValidationState,
+        _callbacks: [] as ((value: Record<string, boolean>) => void)[],
+        subscribe: function (
+          callback: (value: Record<string, boolean>) => void
+        ) {
+          return stepsValidityService.subscribe(callback);
+        },
+        set: function (value: Record<string, boolean>) {
+          stepsValidityService.set(value);
+        },
+      },
+
+      // Current step validity
+      isCurrentStepValid: {
+        current: false,
+        _callbacks: [] as ((value: boolean) => void)[],
+        subscribe: function (callback: (value: boolean) => void) {
+          // Don't show validation errors on initial load
+          // But still run validation to get correctness
+          controller.methods.validateCurrentStep(false);
+
+          // Setup subscriptions to dependencies for this computed property
+          const unsubscribeStep = controller.bindings.currentStep.subscribe((step) => {
+            const stepValid = stepsValidityService.get()[step.id] || false;
+            callback(stepValid);
+            this.current = stepValid;
+          });
+
+          const unsubscribeValidity = stepsValidityService.subscribe((validityMap) => {
+            const currentStep = controller.bindings.currentStep.current;
+            const stepValid = validityMap[currentStep.id] || false;
+            callback(stepValid);
+            this.current = stepValid;
+          });
+
+          return () => {
+            unsubscribeStep();
+            unsubscribeValidity();
+          };
+        },
+        set: function () {
+          // This is a computed property, so setting directly does nothing
+          console.warn(
+            "Cannot directly set isCurrentStepValid as it's computed"
+          );
+        },
+      },
+
+      // Field-level validation errors
+      fieldErrors: {
+        current: {} as Record<string, Record<string, string>>,
+        _callbacks: [] as ((
+          value: Record<string, Record<string, string>>
+        ) => void)[],
+        subscribe: function (
+          callback: (value: Record<string, Record<string, string>>) => void
+        ) {
+          return fieldErrorsService.subscribe(callback);
+        },
+        set: function (value: Record<string, Record<string, string>>) {
+          fieldErrorsService.set(value);
+        },
+      },
+
+      // Computed: Total number of steps
+      totalSteps: {
+        current: config.steps.length,
+        _callbacks: [] as ((value: number) => void)[],
+        subscribe: function (callback: (value: number) => void) {
+          // Update when config changes
+          const unsubscribe = configService.subscribe((newConfig) => {
+            const stepsCount = newConfig.steps.length;
+            callback(stepsCount);
+            this.current = stepsCount;
+          });
+
+          // Initialize with current value
+          callback(this.current);
+          
+          return unsubscribe;
+        },
+        set: function () {
+          // This is a computed property, so setting it directly does nothing
+          console.warn(
+            "Cannot directly set totalSteps as it's computed from config"
+          );
+        },
+      },
+
+      // Computed: Check if we're on the last step
+      isLastStep: {
+        current: config.steps.length === 1,
+        _callbacks: [] as ((value: boolean) => void)[],
+        subscribe: function (callback: (value: boolean) => void) {
+          const computeIsLast = () => {
+            return stepperService.isLastStep;
+          };
+
+          // Update when dependencies change
+          const unsubscribeIndex = stepperService.subscribe(() => {
+            const isLast = computeIsLast();
+            callback(isLast);
+            this.current = isLast;
+          });
+
+          const unsubscribeTotal = controller.bindings.totalSteps.subscribe(() => {
+            const isLast = computeIsLast();
+            callback(isLast);
+            this.current = isLast;
+          });
+
+          // Initialize with current value
+          callback(this.current);
+
+          return () => {
+            unsubscribeIndex();
+            unsubscribeTotal();
+          };
+        },
+        set: function () {
+          // This is a computed property, so setting directly does nothing
+        },
+      },
+
+      // Computed: Check if we're on the first step
+      isFirstStep: {
+        current: true,
+        _callbacks: [] as ((value: boolean) => void)[],
+        subscribe: function (callback: (value: boolean) => void) {
+          // Update when stepIndex changes
+          const unsubscribe = stepperService.subscribe(() => {
+            const isFirst = stepperService.isFirstStep;
+            callback(isFirst);
+            this.current = isFirst;
+          });
+
+          // Initialize with current value
+          callback(this.current);
+
+          return unsubscribe;
+        },
+        set: function () {
+          // This is a computed property, so setting directly does nothing
+        },
+      },
+
+      // Overall form validity
+      isFormValid: {
+        current: false,
+        _callbacks: [] as ((value: boolean) => void)[],
+        subscribe: function (callback: (value: boolean) => void) {
+          const calculateFormValidity = () => {
+            const allSteps = configService.get().steps;
+            const validityMap = stepsValidityService.get();
+            return allSteps.every((step) => validityMap[step.id] === true);
+          };
+
+          // Update when dependencies change
+          const unsubscribeValidity = stepsValidityService.subscribe(() => {
+            const formValid = calculateFormValidity();
+            callback(formValid);
+            this.current = formValid;
+          });
+
+          const unsubscribeConfig = configService.subscribe(() => {
+            const formValid = calculateFormValidity();
+            callback(formValid);
+            this.current = formValid;
+          });
+
+          // Initialize with current value
+          const isValid = calculateFormValidity();
+          this.current = isValid;
+          callback(isValid);
+
+          return () => {
+            unsubscribeValidity();
+            unsubscribeConfig();
+          };
+        },
+        set: function () {
+          // This is a computed property, so setting directly does nothing
+        },
+      },
+    },
 
     methods: {
       // Navigate to next step

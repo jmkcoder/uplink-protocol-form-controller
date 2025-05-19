@@ -1,4 +1,4 @@
-[**@uplink-protocol/form-controller v0.2.0**](../README.md)
+[**@uplink-protocol/form-controller v0.2.5**](../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Class: ConfigService
 
-Defined in: [services/config.service.ts:8](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/8226087892ff308dad52ba8f951d70bde4dbbb0b/src/services/config.service.ts#L8)
+Defined in: [services/config.service.ts:8](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/dd3b5a64ac66f6e3d93aa3a73dfcfe7109a8afc2/src/services/config.service.ts#L8)
 
 Service for managing form configuration
 
@@ -20,7 +20,7 @@ Service for managing form configuration
 
 > **new ConfigService**(`initialConfig`): `ConfigService`
 
-Defined in: [services/config.service.ts:9](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/8226087892ff308dad52ba8f951d70bde4dbbb0b/src/services/config.service.ts#L9)
+Defined in: [services/config.service.ts:9](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/dd3b5a64ac66f6e3d93aa3a73dfcfe7109a8afc2/src/services/config.service.ts#L9)
 
 #### Parameters
 
@@ -42,7 +42,7 @@ Defined in: [services/config.service.ts:9](https://github.com/jmkcoder/uplink-pr
 
 > `protected` **\_callbacks**: (`value`) => `void`[] = `[]`
 
-Defined in: [services/base.service.ts:13](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/8226087892ff308dad52ba8f951d70bde4dbbb0b/src/services/base.service.ts#L13)
+Defined in: [services/base.service.ts:13](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/dd3b5a64ac66f6e3d93aa3a73dfcfe7109a8afc2/src/services/base.service.ts#L13)
 
 Array of callback functions subscribed to state changes
 
@@ -66,7 +66,7 @@ Array of callback functions subscribed to state changes
 
 > `protected` **current**: [`FormConfig`](../interfaces/FormConfig.md)
 
-Defined in: [services/base.service.ts:10](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/8226087892ff308dad52ba8f951d70bde4dbbb0b/src/services/base.service.ts#L10)
+Defined in: [services/base.service.ts:10](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/dd3b5a64ac66f6e3d93aa3a73dfcfe7109a8afc2/src/services/base.service.ts#L10)
 
 The current value of the service state
 
@@ -82,7 +82,7 @@ The current value of the service state
 
 > **get** **totalSteps**(): `number`
 
-Defined in: [services/config.service.ts:93](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/8226087892ff308dad52ba8f951d70bde4dbbb0b/src/services/config.service.ts#L93)
+Defined in: [services/config.service.ts:93](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/dd3b5a64ac66f6e3d93aa3a73dfcfe7109a8afc2/src/services/config.service.ts#L93)
 
 Get total number of steps
 
@@ -98,7 +98,7 @@ Total number of steps
 
 > **addStep**(`step`, `index?`): `number`
 
-Defined in: [services/config.service.ts:39](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/8226087892ff308dad52ba8f951d70bde4dbbb0b/src/services/config.service.ts#L39)
+Defined in: [services/config.service.ts:39](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/dd3b5a64ac66f6e3d93aa3a73dfcfe7109a8afc2/src/services/config.service.ts#L39)
 
 Add a new step to the form configuration
 
@@ -128,7 +128,7 @@ New steps length
 
 > **get**(): [`FormConfig`](../interfaces/FormConfig.md)
 
-Defined in: [services/base.service.ts:56](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/8226087892ff308dad52ba8f951d70bde4dbbb0b/src/services/base.service.ts#L56)
+Defined in: [services/base.service.ts:56](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/dd3b5a64ac66f6e3d93aa3a73dfcfe7109a8afc2/src/services/base.service.ts#L56)
 
 Get the current value
 
@@ -148,7 +148,7 @@ Current value
 
 > **getStepById**(`stepId`): `undefined` \| [`FormStep`](../interfaces/FormStep.md)
 
-Defined in: [services/config.service.ts:76](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/8226087892ff308dad52ba8f951d70bde4dbbb0b/src/services/config.service.ts#L76)
+Defined in: [services/config.service.ts:76](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/dd3b5a64ac66f6e3d93aa3a73dfcfe7109a8afc2/src/services/config.service.ts#L76)
 
 Get the step by ID
 
@@ -172,7 +172,7 @@ Form step or undefined if not found
 
 > **getStepByIndex**(`index`): `undefined` \| [`FormStep`](../interfaces/FormStep.md)
 
-Defined in: [services/config.service.ts:85](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/8226087892ff308dad52ba8f951d70bde4dbbb0b/src/services/config.service.ts#L85)
+Defined in: [services/config.service.ts:85](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/dd3b5a64ac66f6e3d93aa3a73dfcfe7109a8afc2/src/services/config.service.ts#L85)
 
 Get step by index
 
@@ -196,7 +196,7 @@ Form step or undefined if index is out of bounds
 
 > **removeStep**(`stepId`): `boolean`
 
-Defined in: [services/config.service.ts:58](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/8226087892ff308dad52ba8f951d70bde4dbbb0b/src/services/config.service.ts#L58)
+Defined in: [services/config.service.ts:58](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/dd3b5a64ac66f6e3d93aa3a73dfcfe7109a8afc2/src/services/config.service.ts#L58)
 
 Remove a step from the form configuration
 
@@ -220,7 +220,7 @@ Success flag
 
 > **set**(`value`): `void`
 
-Defined in: [services/base.service.ts:45](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/8226087892ff308dad52ba8f951d70bde4dbbb0b/src/services/base.service.ts#L45)
+Defined in: [services/base.service.ts:45](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/dd3b5a64ac66f6e3d93aa3a73dfcfe7109a8afc2/src/services/base.service.ts#L45)
 
 Update the service value and notify all subscribers.
 
@@ -246,7 +246,7 @@ New value to set
 
 > **subscribe**(`callback`): () => `void`
 
-Defined in: [services/base.service.ts:31](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/8226087892ff308dad52ba8f951d70bde4dbbb0b/src/services/base.service.ts#L31)
+Defined in: [services/base.service.ts:31](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/dd3b5a64ac66f6e3d93aa3a73dfcfe7109a8afc2/src/services/base.service.ts#L31)
 
 Subscribe to changes in the service value.
 Callback is immediately invoked with the current value.
@@ -279,7 +279,7 @@ An unsubscribe function that removes this subscription
 
 > **updateConfig**(`newConfig`): `void`
 
-Defined in: [services/config.service.ts:16](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/8226087892ff308dad52ba8f951d70bde4dbbb0b/src/services/config.service.ts#L16)
+Defined in: [services/config.service.ts:16](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/dd3b5a64ac66f6e3d93aa3a73dfcfe7109a8afc2/src/services/config.service.ts#L16)
 
 Update the entire form configuration
 
@@ -301,7 +301,7 @@ New form configuration
 
 > **updateConfigAndReset**(`newConfig`, `resetCallback`): `void`
 
-Defined in: [services/config.service.ts:25](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/8226087892ff308dad52ba8f951d70bde4dbbb0b/src/services/config.service.ts#L25)
+Defined in: [services/config.service.ts:25](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/dd3b5a64ac66f6e3d93aa3a73dfcfe7109a8afc2/src/services/config.service.ts#L25)
 
 Update the form configuration and reset related state
 

@@ -37,13 +37,9 @@ module.exports = {
     ]
   },
   resolve: {
-    extensions: ['.ts', '.tsx', '.js', '.jsx'],
-    alias: {
-      '@uplink-protocol/core': path.resolve(__dirname, '../../src')
-    }
+    extensions: ['.ts', '.tsx', '.js', '.jsx']
   },
   externals: {
-    '@uplink-protocol/core': '@uplink-protocol/core',
     'react': 'react',
     'react-dom': 'react-dom',
     'react-scripts': 'react-scripts',

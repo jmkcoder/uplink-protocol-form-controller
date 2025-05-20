@@ -201,6 +201,7 @@ For detailed documentation and examples, see:
 - [Validation Guide](./docs/validation-guide.md) - In-depth guide to validation capabilities
 - [Technical Guide](./docs/technical-guide.md) - Implementation details and best practices
 - [TypeScript Usage](./docs/typescript-usage.md) - Guide to using the form controller with TypeScript
+- [Extensibility Guide](./docs/extensibility-guide.md) - Guide to extending the FormControllerClass for custom behavior
 - [API Reference](./docs/api/README.md) - Auto-generated API documentation with types and examples
 
 ## Use Cases

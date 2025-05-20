@@ -22,39 +22,57 @@ import { TypedController } from "@uplink-protocol/core";
  */
 export class FormControllerClass implements TypedController {
   // Core Services
-  private configService: ConfigService;
-  private stepperService: StepperService;
-  private formService: FormService;
-  private fieldService: FieldService;
-  private interactionService: InteractionService;
-  private validatorService: ValidatorService;
-  private fieldErrorsService: BaseService<Record<string, Record<string, string>>>;
-  private stepsValidityService: BaseService<Record<string, boolean>>;
+  protected configService!: ConfigService;
+  protected stepperService!: StepperService;
+  protected formService!: FormService;
+  protected fieldService!: FieldService;
+  protected interactionService!: InteractionService;
+  protected validatorService!: ValidatorService;
+  protected fieldErrorsService!: BaseService<Record<string, Record<string, string>>>;
+  protected stepsValidityService!: BaseService<Record<string, boolean>>;
   
   // Manager Services
-  private formManagerService: FormManagerService;
-  private configManagerService: ConfigManagerService;
-  private navigationManager: NavigationManager;
-  private bindingManager: BindingManager;
+  protected formManagerService!: FormManagerService;
+  protected configManagerService!: ConfigManagerService;
+  protected navigationManager!: NavigationManager;
+  protected bindingManager!: BindingManager;
 
   // State
-  private initialFormData: Record<string, Record<string, any>>;
-  private stepValidationState: Record<string, boolean>;
+  protected initialFormData: Record<string, Record<string, any>> = {};
+  protected stepValidationState: Record<string, boolean> = {};
 
   // Controller with bindings and methods
   public bindings: any;
-  public methods: any;
-
-  /**
+  public methods: any;  /**
    * Constructor for the FormControllerClass
    * @param config - The form configuration with steps and field definitions
    */
   constructor(config: FormConfig) {
-    // Initialize form data from config defaults or empty objects
-    this.initialFormData = {};
-    this.stepValidationState = {};
-    
     // Initialize form data structure and step validation state
+    this.setupInitialFormData(config);
+    
+    // Initialize services
+    this.initializeServices(config);
+    
+    // Initialize manager services
+    this.initializeManagerServices();
+    
+    // Use the bindings from the binding manager
+    this.bindings = this.bindingManager.bindings;
+    
+    // Initialize methods
+    this.initializeMethods();
+    
+    // Set step validity without showing error messages initially
+    this.initializeStepValidation();
+  }
+  
+  /**
+   * Set up initial form data and validation state
+   * This method can be overridden by subclasses to customize initial data setup
+   * @param config - The form configuration
+   */
+  protected setupInitialFormData(config: FormConfig): void {
     config.steps.forEach((step: FormStep) => {
       this.initialFormData[step.id] = {};
 
@@ -71,8 +89,14 @@ export class FormControllerClass implements TypedController {
       );
       this.stepValidationState[step.id] = !hasRequiredFields;
     });
-
-    // Initialize services
+  }
+  
+  /**
+   * Initialize base services
+   * This method can be overridden by subclasses to customize service initialization
+   * @param config - The form configuration
+   */
+  protected initializeServices(config: FormConfig): void {
     this.fieldErrorsService = new BaseService<Record<string, Record<string, string>>>({});
     this.stepsValidityService = new BaseService<Record<string, boolean>>(this.stepValidationState);
     
@@ -92,8 +116,13 @@ export class FormControllerClass implements TypedController {
     );    
     this.interactionService = new InteractionService(this.configService, this.fieldService);
     this.validatorService = new ValidatorService();
-    
-    // Initialize manager services
+  }
+  
+  /**
+   * Initialize manager services
+   * This method can be overridden by subclasses to customize manager service initialization
+   */
+  protected initializeManagerServices(): void {
     this.formManagerService = new FormManagerService(
       this.formService,
       this.fieldService,
@@ -109,36 +138,27 @@ export class FormControllerClass implements TypedController {
       this.fieldErrorsService,
       this.stepsValidityService,
       this.stepperService
-    );    
+    );
+    
     this.navigationManager = new NavigationManager(
       this.stepperService,
       this.configService,
       this.fieldService,
       this.interactionService
     );
-    
-    this.bindingManager = new BindingManager(
+      this.bindingManager = new BindingManager(
       this.configService,
       this.stepperService,
       this.formService,
       this.fieldErrorsService,
       this.stepsValidityService
     );
-    
-    // Use the bindings from the binding manager
-    this.bindings = this.bindingManager.bindings;
-    
-    // Initialize methods
-    this.initializeMethods();
-    
-    // Set step validity without showing error messages initially
-    this.initializeStepValidation();
-  }
-  // The initializeBindings method has been refactored out and moved to the BindingManager service
+  }// The initializeBindings method has been refactored out and moved to the BindingManager service
   /**
    * Initialize the methods object with all controller functions
+   * This method can be overridden by subclasses to customize controller functionality
    */
-  private initializeMethods(): void {
+  protected initializeMethods(): void {
     const self = this;
 
     this.methods = {
@@ -331,11 +351,11 @@ export class FormControllerClass implements TypedController {
       },
     };
   }
-
   /**
    * Initialize step validation without showing error messages
+   * This method can be overridden by subclasses to customize validation behavior
    */
-  private initializeStepValidation(): void {
+  protected initializeStepValidation(): void {
     const config = this.configService.get();
     
     config.steps.forEach((step) => {

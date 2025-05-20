@@ -3,17 +3,14 @@ import { state, methods, adapter } from "./controller.js";
 const nameInput = document.querySelector("#name");
 const emailInput = document.querySelector("#email");
 const messageInput = document.querySelector("#message");
-const submitButton = document.querySelector("#submit");
 const nameError = document.querySelector("#name-error");
 const emailError = document.querySelector("#email-error");
 const messageError = document.querySelector("#message-error");
 
 // Subscribe to state changes to update UI
 adapter.watchProperty("formData", (formData) => {
-  console.log("Form data updated:", formData);
     // Sync input values (only if not focused)
   if (document.activeElement !== nameInput) {
-    console.log('Name input value updated:', formData.contact?.name);
     nameInput.value = formData.contact?.name || "";
   }
 

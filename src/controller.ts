@@ -11,69 +11,104 @@ import {
   StepperService,
   ValidatorService
 } from "./services";
+import { TypedController } from "@uplink-protocol/core";
 
 /**
- * DynamicFormStepperController - A controller for multi-step forms with dynamic configuration
- * @param config - The form configuration with steps and field definitions
- * @returns A controller instance with bindings and methods for form state management
+ * FormControllerClass - A class for multi-step forms with dynamic configuration
  */
-export const FormController = (config: FormConfig) => {
-  // Initialize form data from config defaults or empty objects
-  const initialFormData: Record<string, Record<string, any>> = {};
-  const stepValidationState: Record<string, boolean> = {};
-  
-  // Initialize form data structure and step validation state
-  config.steps.forEach((step: FormStep) => {
-    initialFormData[step.id] = {};
+export class FormControllerClass implements TypedController {
+  // Services
+  private configService: ConfigService;
+  private stepperService: StepperService;
+  private formService: FormService;
+  private fieldService: FieldService;
+  private interactionService: InteractionService;
+  private validatorService: ValidatorService;
+  private fieldErrorsService: BaseService<Record<string, Record<string, string>>>;
+  private stepsValidityService: BaseService<Record<string, boolean>>;
 
-    // Set initial field values
-    Object.entries(step.fields).forEach(([fieldId, field]: [string, Field]) => {
-      const defaultValue = config.defaultValues?.[fieldId] ?? field.value ?? "";
-      initialFormData[step.id][fieldId] = defaultValue;
+  // State
+  private initialFormData: Record<string, Record<string, any>>;
+  private stepValidationState: Record<string, boolean>;
+
+  // Controller with bindings and methods
+  public bindings: any;
+  public methods: any;
+
+  /**
+   * Constructor for the FormControllerClass
+   * @param config - The form configuration with steps and field definitions
+   */
+  constructor(config: FormConfig) {
+    // Initialize form data from config defaults or empty objects
+    this.initialFormData = {};
+    this.stepValidationState = {};
+    
+    // Initialize form data structure and step validation state
+    config.steps.forEach((step: FormStep) => {
+      this.initialFormData[step.id] = {};
+
+      // Set initial field values
+      Object.entries(step.fields).forEach(([fieldId, field]: [string, Field]) => {
+        const defaultValue = config.defaultValues?.[fieldId] ?? field.value ?? "";
+        this.initialFormData[step.id][fieldId] = defaultValue;
+      });
+
+      // Check if step has required fields - if yes, initial validation state is false
+      // Otherwise, it can be valid by default
+      const hasRequiredFields = Object.values(step.fields).some(
+        (field) => field.required === true
+      );
+      this.stepValidationState[step.id] = !hasRequiredFields;
     });
 
-    // Check if step has required fields - if yes, initial validation state is false
-    // Otherwise, it can be valid by default
-    const hasRequiredFields = Object.values(step.fields).some(
-      (field) => field.required === true
+    // Initialize services
+    this.fieldErrorsService = new BaseService<Record<string, Record<string, string>>>({});
+    this.stepsValidityService = new BaseService<Record<string, boolean>>(this.stepValidationState);
+    
+    this.configService = new ConfigService(config);
+    this.stepperService = new StepperService(0, this.configService);
+    this.formService = new FormService(
+      this.initialFormData, 
+      this.configService, 
+      this.fieldErrorsService, 
+      this.stepsValidityService
     );
-    stepValidationState[step.id] = !hasRequiredFields;
-  });
+    this.fieldService = new FieldService(
+      this.configService, 
+      this.formService, 
+      this.fieldErrorsService, 
+      this.stepsValidityService
+    );
+    
+    this.interactionService = new InteractionService(this.configService, this.fieldService);
+    this.validatorService = new ValidatorService();
 
-  // Initialize services
-  const fieldErrorsService = new BaseService<Record<string, Record<string, string>>>({});
-  const stepsValidityService = new BaseService<Record<string, boolean>>(stepValidationState);
-  
-  const configService = new ConfigService(config);
-  const stepperService = new StepperService(0, configService);
-  const formService = new FormService(
-    initialFormData, 
-    configService, 
-    fieldErrorsService, 
-    stepsValidityService
-  );
-  const fieldService = new FieldService(
-    configService, 
-    formService, 
-    fieldErrorsService, 
-    stepsValidityService
-  );
-  
-  const interactionService = new InteractionService(configService, fieldService);
-  const validatorService = new ValidatorService();
+    // Initialize controller
+    this.initializeBindings(config);
+    this.initializeMethods();
+    
+    // Set step validity without showing error messages initially
+    this.initializeStepValidation();
+  }
 
-  // Initialize controller with reactive bindings system
-  const controller = {
-    bindings: {
+  /**
+   * Initialize the reactive bindings system
+   */
+  private initializeBindings(config: FormConfig): void {
+    const self = this;
+
+    this.bindings = {
       // Form configuration
       config: {
         current: config,
         _callbacks: [] as ((value: FormConfig) => void)[],
         subscribe: function (callback: (value: FormConfig) => void) {
-          return configService.subscribe(callback);
+          return self.configService.subscribe(callback);
         },
         set: function (value: FormConfig) {
-          configService.set(value);
+          self.configService.set(value);
+          console.log("Config updated:", value);
         },
       },
 
@@ -82,10 +117,10 @@ export const FormController = (config: FormConfig) => {
         current: 0,
         _callbacks: [] as ((value: number) => void)[],
         subscribe: function (callback: (value: number) => void) {
-          return stepperService.subscribe(callback);
+          return self.stepperService.subscribe(callback);
         },
         set: function (value: number) {
-          stepperService.set(value);
+          self.stepperService.set(value);
         },
       },
 
@@ -95,8 +130,8 @@ export const FormController = (config: FormConfig) => {
         _callbacks: [] as ((value: FormStep) => void)[],
         subscribe: function (callback: (value: FormStep) => void) {
           // Create a computed property that depends on both currentStepIndex and config
-          const unsubscribeIndex = stepperService.subscribe((stepIndex) => {
-            const currentStep = configService.getStepByIndex(stepIndex);
+          const unsubscribeIndex = self.stepperService.subscribe((stepIndex) => {
+            const currentStep = self.configService.getStepByIndex(stepIndex);
             if (currentStep) {
               callback(currentStep);
               this.current = currentStep;
@@ -104,8 +139,8 @@ export const FormController = (config: FormConfig) => {
           });
 
           // Also listen for config changes
-          const unsubscribeConfig = configService.subscribe((newConfig) => {
-            const currentStep = newConfig.steps[stepperService.get()];
+          const unsubscribeConfig = self.configService.subscribe((newConfig) => {
+            const currentStep = newConfig.steps[self.stepperService.get()];
             if (currentStep) {
               callback(currentStep);
               this.current = currentStep;
@@ -130,31 +165,31 @@ export const FormController = (config: FormConfig) => {
 
       // Form data for all steps
       formData: {
-        current: initialFormData,
+        current: self.initialFormData,
         _callbacks: [] as ((
           value: Record<string, Record<string, any>>
         ) => void)[],
         subscribe: function (
           callback: (value: Record<string, Record<string, any>>) => void
         ) {
-          return formService.subscribe(callback);
+          return self.formService.subscribe(callback);
         },
         set: function (value: Record<string, Record<string, any>>) {
-          formService.set(value);
+          self.formService.set(value);
         },
       },
 
       // Track step validity
       stepsValidity: {
-        current: stepValidationState,
+        current: self.stepValidationState,
         _callbacks: [] as ((value: Record<string, boolean>) => void)[],
         subscribe: function (
           callback: (value: Record<string, boolean>) => void
         ) {
-          return stepsValidityService.subscribe(callback);
+          return self.stepsValidityService.subscribe(callback);
         },
         set: function (value: Record<string, boolean>) {
-          stepsValidityService.set(value);
+          self.stepsValidityService.set(value);
         },
       },
 
@@ -165,17 +200,17 @@ export const FormController = (config: FormConfig) => {
         subscribe: function (callback: (value: boolean) => void) {
           // Don't show validation errors on initial load
           // But still run validation to get correctness
-          controller.methods.validateCurrentStep(false);
+          self.methods.validateCurrentStep(false);
 
           // Setup subscriptions to dependencies for this computed property
-          const unsubscribeStep = controller.bindings.currentStep.subscribe((step) => {
-            const stepValid = stepsValidityService.get()[step.id] || false;
+          const unsubscribeStep = self.bindings.currentStep.subscribe((step: FormStep) => {
+            const stepValid = self.stepsValidityService.get()[step.id] || false;
             callback(stepValid);
             this.current = stepValid;
           });
 
-          const unsubscribeValidity = stepsValidityService.subscribe((validityMap) => {
-            const currentStep = controller.bindings.currentStep.current;
+          const unsubscribeValidity = self.stepsValidityService.subscribe((validityMap) => {
+            const currentStep = self.bindings.currentStep.current;
             const stepValid = validityMap[currentStep.id] || false;
             callback(stepValid);
             this.current = stepValid;
@@ -203,10 +238,10 @@ export const FormController = (config: FormConfig) => {
         subscribe: function (
           callback: (value: Record<string, Record<string, string>>) => void
         ) {
-          return fieldErrorsService.subscribe(callback);
+          return self.fieldErrorsService.subscribe(callback);
         },
         set: function (value: Record<string, Record<string, string>>) {
-          fieldErrorsService.set(value);
+          self.fieldErrorsService.set(value);
         },
       },
 
@@ -216,7 +251,7 @@ export const FormController = (config: FormConfig) => {
         _callbacks: [] as ((value: number) => void)[],
         subscribe: function (callback: (value: number) => void) {
           // Update when config changes
-          const unsubscribe = configService.subscribe((newConfig) => {
+          const unsubscribe = self.configService.subscribe((newConfig) => {
             const stepsCount = newConfig.steps.length;
             callback(stepsCount);
             this.current = stepsCount;
@@ -241,17 +276,17 @@ export const FormController = (config: FormConfig) => {
         _callbacks: [] as ((value: boolean) => void)[],
         subscribe: function (callback: (value: boolean) => void) {
           const computeIsLast = () => {
-            return stepperService.isLastStep;
+            return self.stepperService.isLastStep;
           };
 
           // Update when dependencies change
-          const unsubscribeIndex = stepperService.subscribe(() => {
+          const unsubscribeIndex = self.stepperService.subscribe(() => {
             const isLast = computeIsLast();
             callback(isLast);
             this.current = isLast;
           });
 
-          const unsubscribeTotal = controller.bindings.totalSteps.subscribe(() => {
+          const unsubscribeTotal = self.bindings.totalSteps.subscribe(() => {
             const isLast = computeIsLast();
             callback(isLast);
             this.current = isLast;
@@ -276,8 +311,8 @@ export const FormController = (config: FormConfig) => {
         _callbacks: [] as ((value: boolean) => void)[],
         subscribe: function (callback: (value: boolean) => void) {
           // Update when stepIndex changes
-          const unsubscribe = stepperService.subscribe(() => {
-            const isFirst = stepperService.isFirstStep;
+          const unsubscribe = self.stepperService.subscribe(() => {
+            const isFirst = self.stepperService.isFirstStep;
             callback(isFirst);
             this.current = isFirst;
           });
@@ -298,19 +333,19 @@ export const FormController = (config: FormConfig) => {
         _callbacks: [] as ((value: boolean) => void)[],
         subscribe: function (callback: (value: boolean) => void) {
           const calculateFormValidity = () => {
-            const allSteps = configService.get().steps;
-            const validityMap = stepsValidityService.get();
+            const allSteps = self.configService.get().steps;
+            const validityMap = self.stepsValidityService.get();
             return allSteps.every((step) => validityMap[step.id] === true);
           };
 
           // Update when dependencies change
-          const unsubscribeValidity = stepsValidityService.subscribe(() => {
+          const unsubscribeValidity = self.stepsValidityService.subscribe(() => {
             const formValid = calculateFormValidity();
             callback(formValid);
             this.current = formValid;
           });
 
-          const unsubscribeConfig = configService.subscribe(() => {
+          const unsubscribeConfig = self.configService.subscribe(() => {
             const formValid = calculateFormValidity();
             callback(formValid);
             this.current = formValid;
@@ -330,56 +365,63 @@ export const FormController = (config: FormConfig) => {
           // This is a computed property, so setting directly does nothing
         },
       },
-    },
+    };
+  }
 
-    methods: {
+  /**
+   * Initialize the methods object with all controller functions
+   */
+  private initializeMethods(): void {
+    const self = this;
+
+    this.methods = {
       // Navigate to next step
       nextStep: () => {
-        const currentStep = controller.bindings.currentStep.current;
+        const currentStep = self.bindings.currentStep.current;
         
         // Mark all fields in the current step as touched to show all validation errors
-        interactionService.markAllFieldsInStepTouched(currentStep.id, true);
+        self.interactionService.markAllFieldsInStepTouched(currentStep.id, true);
 
         // Force validation just before navigation attempt with error display
-        const currentStepValid = controller.methods.validateCurrentStep(true);
+        const currentStepValid = self.methods.validateCurrentStep(true);
 
         // Only proceed if current step is valid
         if (currentStepValid) {
-          const currentIndex = controller.bindings.currentStepIndex.current;
+          const currentIndex = self.bindings.currentStepIndex.current;
           const newIndex = currentIndex + 1;
           
-          if (newIndex < configService.get().steps.length) {
-            stepperService.set(newIndex);
+          if (newIndex < self.configService.get().steps.length) {
+            self.stepperService.set(newIndex);
             
             // Also update the current values in the bindings for immediate test access
-            controller.bindings.currentStepIndex.current = newIndex;
+            self.bindings.currentStepIndex.current = newIndex;
             
-            const step = configService.getStepByIndex(newIndex);
+            const step = self.configService.getStepByIndex(newIndex);
             if (step) {
-              controller.bindings.currentStep.current = step;
+              self.bindings.currentStep.current = step;
             }
             
             return newIndex;
           }
         }
         
-        return controller.bindings.currentStepIndex.current;
+        return self.bindings.currentStepIndex.current;
       },
 
       // Navigate to previous step
       prevStep: () => {
-        const currentIndex = controller.bindings.currentStepIndex.current;
+        const currentIndex = self.bindings.currentStepIndex.current;
         
         if (currentIndex > 0) {
           const newIndex = currentIndex - 1;
-          stepperService.set(newIndex);
+          self.stepperService.set(newIndex);
           
           // Also update the current values in the bindings for immediate test access
-          controller.bindings.currentStepIndex.current = newIndex;
+          self.bindings.currentStepIndex.current = newIndex;
           
-          const step = configService.getStepByIndex(newIndex);
+          const step = self.configService.getStepByIndex(newIndex);
           if (step) {
-            controller.bindings.currentStep.current = step;
+            self.bindings.currentStep.current = step;
           }
           
           return newIndex;
@@ -390,15 +432,15 @@ export const FormController = (config: FormConfig) => {
 
       // Go to a specific step
       goToStep: (stepIndex: number) => {
-        const result = stepperService.goToStep(stepIndex);
+        const result = self.stepperService.goToStep(stepIndex);
         
         // Also update the current values in the bindings for immediate test access
         if (result) {
-          controller.bindings.currentStepIndex.current = stepIndex;
+          self.bindings.currentStepIndex.current = stepIndex;
           
-          const step = configService.getStepByIndex(stepIndex);
+          const step = self.configService.getStepByIndex(stepIndex);
           if (step) {
-            controller.bindings.currentStep.current = step;
+            self.bindings.currentStep.current = step;
           }
         }
         
@@ -408,24 +450,24 @@ export const FormController = (config: FormConfig) => {
       // Update form data for a field
       updateField: (stepId: string, fieldId: string, value: any) => {
         // Update the field value in formData
-        const formData = { ...formService.get() };
+        const formData = { ...self.formService.get() };
         if (!formData[stepId]) {
           formData[stepId] = {};
         }
         formData[stepId][fieldId] = value;
-        formService.set(formData);
+        self.formService.set(formData);
         
         // Update bindings to make sure the change is propagated
-        controller.bindings.formData.current = formData;
+        self.bindings.formData.current = formData;
 
         // Mark this field as touched
-        interactionService.markFieldTouched(stepId, fieldId, true);
+        self.interactionService.markFieldTouched(stepId, fieldId, true);
 
         // Validate only the current field and show its errors
-        fieldService.validateField(stepId, fieldId, value, true);
+        self.fieldService.validateField(stepId, fieldId, value, true);
 
         // Validate the step with showing errors only for touched fields
-        interactionService.validateStepWithTouchedErrors(stepId);
+        self.interactionService.validateStepWithTouchedErrors(stepId);
       },
 
       // Validate a single field
@@ -436,7 +478,7 @@ export const FormController = (config: FormConfig) => {
         showErrors = true
       ) => {
         // Get the step and field
-        const step = configService.getStepById(stepId);
+        const step = self.configService.getStepById(stepId);
         const field = step?.fields[fieldId];
         
         if (!step || !field) {
@@ -444,12 +486,12 @@ export const FormController = (config: FormConfig) => {
         }
         
         // Validate the field
-        const isValid = fieldService.validateField(stepId, fieldId, value, showErrors);
+        const isValid = self.fieldService.validateField(stepId, fieldId, value, showErrors);
         
         // Ensure current errors are updated in the binding
         if (!isValid && showErrors) {
           // Get the current errors from the service
-          const errors = fieldErrorsService.get();
+          const errors = self.fieldErrorsService.get();
           
           // Make sure we have the error structure
           if (!errors[stepId]) {
@@ -462,7 +504,7 @@ export const FormController = (config: FormConfig) => {
           }
           
           // Update the current binding value for immediate access in tests
-          controller.bindings.fieldErrors.current = { ...errors };
+          self.bindings.fieldErrors.current = { ...errors };
         }
         
         return isValid;
@@ -470,50 +512,50 @@ export const FormController = (config: FormConfig) => {
 
       // Validate an entire step
       validateStep: (stepId: string, showErrors = true) => {
-        return fieldService.validateStep(stepId, showErrors);
+        return self.fieldService.validateStep(stepId, showErrors);
       },
 
       // Validate the current step
       validateCurrentStep: (showErrors = true) => {
-        const currentStep = controller.bindings.currentStep.current;
-        return fieldService.validateStep(currentStep.id, showErrors);
+        const currentStep = self.bindings.currentStep.current;
+        return self.fieldService.validateStep(currentStep.id, showErrors);
       },
 
       // Validate the current step showing errors only for touched fields
       validateCurrentStepWithTouchedErrors: () => {
-        const currentStep = controller.bindings.currentStep.current;
-        return interactionService.validateStepWithTouchedErrors(currentStep.id);
+        const currentStep = self.bindings.currentStep.current;
+        return self.interactionService.validateStepWithTouchedErrors(currentStep.id);
       },
 
       // Validate a step showing errors only for touched fields
       validateStepWithTouchedErrors: (stepId: string) => {
-        return interactionService.validateStepWithTouchedErrors(stepId);
+        return self.interactionService.validateStepWithTouchedErrors(stepId);
       },
 
       // Validate all steps
       validateForm: (showErrors = true) => {
-        return fieldService.validateForm(showErrors);
+        return self.fieldService.validateForm(showErrors);
       },
 
       // Submit the form
       submitForm: () => {
         // Use the formService's enhanced submitForm method
-        return formService.submitForm(
+        return self.formService.submitForm(
           // Function to mark all fields touched and validate
           () => {
-            interactionService.markAllFieldsTouched(true);
-            return controller.methods.validateForm(true);
+            self.interactionService.markAllFieldsTouched(true);
+            return self.methods.validateForm(true);
           },
           // Function to find the first invalid step
           () => {
-            const validity = stepsValidityService.get();
-            const config = configService.get();
+            const validity = self.stepsValidityService.get();
+            const config = self.configService.get();
             return config.steps.findIndex((step) => !validity[step.id]);
           },
           // Function to navigate to a step
           (index: number) => {
-            if (index !== -1 && index !== stepperService.get()) {
-              stepperService.set(index);
+            if (index !== -1 && index !== self.stepperService.get()) {
+              self.stepperService.set(index);
             }
           }
         );
@@ -522,10 +564,10 @@ export const FormController = (config: FormConfig) => {
       // Reset the entire form
       resetForm: () => {
         // Reset touch tracking
-        interactionService.resetTouchTracking();
+        self.interactionService.resetTouchTracking();
         
         // Reset form data to defaults
-        const config = configService.get();
+        const config = self.configService.get();
         const initialFormData: Record<string, Record<string, any>> = {};
   
         // Initialize form data structure with default values
@@ -540,49 +582,49 @@ export const FormController = (config: FormConfig) => {
         });
         
         // Set the form data
-        formService.set(initialFormData);
+        self.formService.set(initialFormData);
         
         // Update the current values in bindings
-        controller.bindings.formData.current = initialFormData;
+        self.bindings.formData.current = initialFormData;
         
         // Re-validate without showing errors
-        controller.methods.validateForm(false);
+        self.methods.validateForm(false);
       },
 
       // Update form configuration (useful for dynamic forms)
       updateConfig: (newConfig: FormConfig) => {
         // First update the config service
-        configService.set(newConfig);
+        self.configService.set(newConfig);
         
         // Update the current value in bindings
-        controller.bindings.config.current = newConfig;
-        controller.bindings.totalSteps.current = newConfig.steps.length;
+        self.bindings.config.current = newConfig;
+        self.bindings.totalSteps.current = newConfig.steps.length;
         
         // Reset form and touch tracking
-        interactionService.resetTouchTracking();
-        formService.resetForm();
-        controller.methods.validateForm(false);
+        self.interactionService.resetTouchTracking();
+        self.formService.resetForm();
+        self.methods.validateForm(false);
       },
 
       // Get form data for a specific step
       getStepData: (stepId: string) => {
-        return formService.getStepData(stepId);
+        return self.formService.getStepData(stepId);
       },
 
       // Get all form data
       getAllData: () => {
-        return formService.getAllData();
+        return self.formService.getAllData();
       },
 
       // Get flattened form data (merged from all steps)
       getFlatData: () => {
-        return formService.getFlatData();
+        return self.formService.getFlatData();
       },
 
       // Add a new step dynamically
       addStep: (step: FormStep, index?: number) => {
         // Get the current config and steps
-        const config = configService.get();
+        const config = self.configService.get();
         const steps = [...config.steps];
         
         // Add the new step at the specified index or at the end
@@ -594,14 +636,14 @@ export const FormController = (config: FormConfig) => {
         
         // Update the config
         const newConfig = { ...config, steps };
-        configService.set(newConfig);
+        self.configService.set(newConfig);
         
         // Update current values in bindings
-        controller.bindings.config.current = newConfig;
-        controller.bindings.totalSteps.current = steps.length;
+        self.bindings.config.current = newConfig;
+        self.bindings.totalSteps.current = steps.length;
         
         // Initialize form data for the new step
-        const formData = { ...formService.get() };
+        const formData = { ...self.formService.get() };
         formData[step.id] = {};
         
         Object.entries(step.fields).forEach(([fieldId, field]) => {
@@ -609,11 +651,11 @@ export const FormController = (config: FormConfig) => {
           formData[step.id][fieldId] = defaultValue;
         });
 
-        formService.set(formData);
-        controller.bindings.formData.current = formData;
+        self.formService.set(formData);
+        self.bindings.formData.current = formData;
         
         // Validate the new step immediately (without showing errors)
-        fieldService.validateStep(step.id, false);
+        self.fieldService.validateStep(step.id, false);
 
         return steps.length;
       },
@@ -621,7 +663,7 @@ export const FormController = (config: FormConfig) => {
       // Remove a step dynamically
       removeStep: (stepId: string) => {
         // Get the current config and find the step to remove
-        const config = configService.get();
+        const config = self.configService.get();
         const stepIndex = config.steps.findIndex(step => step.id === stepId);
         
         if (stepIndex === -1) {
@@ -633,33 +675,33 @@ export const FormController = (config: FormConfig) => {
         
         // Update the config
         const newConfig = { ...config, steps };
-        configService.set(newConfig);
+        self.configService.set(newConfig);
         
         // Update bindings
-        controller.bindings.config.current = newConfig;
-        controller.bindings.totalSteps.current = steps.length;
+        self.bindings.config.current = newConfig;
+        self.bindings.totalSteps.current = steps.length;
 
         // Remove step data from form
-        const formData = { ...formService.get() };
+        const formData = { ...self.formService.get() };
         delete formData[stepId];
-        formService.set(formData);
-        controller.bindings.formData.current = formData;
+        self.formService.set(formData);
+        self.bindings.formData.current = formData;
 
         // Remove step validity
-        const validity = { ...stepsValidityService.get() };
+        const validity = { ...self.stepsValidityService.get() };
         delete validity[stepId];
-        stepsValidityService.set(validity);
+        self.stepsValidityService.set(validity);
 
         // Remove step errors
-        const errors = { ...fieldErrorsService.get() };
+        const errors = { ...self.fieldErrorsService.get() };
         delete errors[stepId];
-        fieldErrorsService.set(errors);
-        controller.bindings.fieldErrors.current = errors;
+        self.fieldErrorsService.set(errors);
+        self.bindings.fieldErrors.current = errors;
 
         // Adjust current step index if needed
-        const currentIndex = stepperService.get();
+        const currentIndex = self.stepperService.get();
         if (currentIndex >= steps.length) {
-          stepperService.set(Math.max(0, steps.length - 1));
+          self.stepperService.set(Math.max(0, steps.length - 1));
         }
 
         return true;
@@ -667,42 +709,56 @@ export const FormController = (config: FormConfig) => {
 
       // Register a dynamic validator
       registerValidator: (name: string, validatorFn: DynamicValidator) => {
-        validatorService.registerValidator(name, validatorFn);
+        self.validatorService.registerValidator(name, validatorFn);
       },
 
       // Unregister a dynamic validator
       unregisterValidator: (name: string): boolean => {
-        return validatorService.unregisterValidator(name);
+        return self.validatorService.unregisterValidator(name);
       },
 
       // Get a list of all available validators (built-in + custom)
       getAvailableValidators: () => {
-        return validatorService.getAvailableValidators();
+        return self.validatorService.getAvailableValidators();
       },
-    },
-  };
+    };
+  }
 
-  // Set step validity without showing error messages initially
-  config.steps.forEach((step) => {
-    // Check if the step has required fields that are empty
-    const hasRequiredEmptyFields = Object.entries(step.fields).some(
-      ([fieldId, field]) => {
-        if (field.required || (field.validation && field.validation.required)) {
-          const value = initialFormData[step.id]?.[fieldId];
-          const isEmpty = field.type === "checkbox" ? value === false : !value;
-          return isEmpty;
+  /**
+   * Initialize step validation without showing error messages
+   */
+  private initializeStepValidation(): void {
+    const config = this.configService.get();
+    
+    config.steps.forEach((step) => {
+      // Check if the step has required fields that are empty
+      const hasRequiredEmptyFields = Object.entries(step.fields).some(
+        ([fieldId, field]) => {
+          if (field.required || (field.validation && field.validation.required)) {
+            const value = this.initialFormData[step.id]?.[fieldId];
+            const isEmpty = field.type === "checkbox" ? value === false : !value;
+            return isEmpty;
+          }
+          return false;
         }
-        return false;
+      );
+
+      // Update step validity state without showing error messages
+      if (hasRequiredEmptyFields) {
+        const validity = { ...this.stepsValidityService.get() };
+        validity[step.id] = false;
+        this.stepsValidityService.set(validity);
       }
-    );
+    });
+  }
+}
 
-    // Update step validity state without showing error messages
-    if (hasRequiredEmptyFields) {
-      const validity = { ...stepsValidityService.get() };
-      validity[step.id] = false;
-      stepsValidityService.set(validity);
-    }
-  });
-
-  return controller;
-};
+/**
+ * FormController - Factory function that creates and returns a new FormControllerClass instance.
+ * 
+ * @param config - The form configuration with steps and field definitions
+ * @returns A FormControllerClass instance
+ */
+export const FormController = (config: FormConfig): FormControllerClass => {
+  return new FormControllerClass(config);
+}

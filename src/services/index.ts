@@ -5,3 +5,7 @@ export * from './form.service';
 export * from './interaction.service';
 export * from './stepper.service';
 export * from './validator.service';
+export * from './binding-manager.service';
+export * from './form-manager.service';
+export * from './config-manager.service';
+export * from './navigation-manager.service';

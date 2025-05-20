@@ -9,6 +9,7 @@ export class ConfigService extends BaseService<FormConfig> {
   constructor(initialConfig: FormConfig) {
     super(initialConfig);
   }
+
   /**
    * Update the entire form configuration
    * @param newConfig New form configuration
@@ -66,7 +67,8 @@ export class ConfigService extends BaseService<FormConfig> {
     this.set(config);
 
     return true;
-  }
+  }  // The updateConfigWithFullReset method has been moved to ConfigManagerService
+  // as part of the architectural refactoring
 
   /**
    * Get the step by ID

@@ -1,5 +1,6 @@
 import { BaseService } from './base.service';
 import { ConfigService } from './config.service';
+import { FormStep } from '../interfaces/form-step.interface';
 
 /**
  * Service for managing multi-step form navigation
@@ -11,6 +12,7 @@ export class StepperService extends BaseService<number> {
     super(initialStepIndex);
     this.configService = configService;
   }
+  
   /**
    * Navigate to the next step if possible
    * @param validateCallback Optional validation callback that determines if navigation is allowed
@@ -100,5 +102,89 @@ export class StepperService extends BaseService<number> {
    */
   get isLastStep(): boolean {
     return this.current === this.configService.totalSteps - 1;
+  }
+  /**
+   * Validate current step and navigate to next if valid
+   * Also updates bindings to ensure immediate access to current values
+   * 
+   * @param currentStep The current step object
+   * @param markFieldsTouched Function to mark fields as touched
+   * @param validateCurrentStep Function to validate the current step
+   * @param updateBindings Function to update bindings after navigation
+   * @returns New step index or current step if navigation fails
+   */
+  nextStepWithValidation(
+    currentStep: FormStep,
+    markFieldsTouched: (stepId: string, touched: boolean) => void,
+    validateCurrentStep: (showErrors: boolean) => boolean,
+    updateBindings: (newIndex: number, step: FormStep | null) => void
+  ): number {
+    // Mark all fields in the current step as touched to show all validation errors
+    markFieldsTouched(currentStep.id, true);
+
+    // Force validation just before navigation attempt with error display
+    const currentStepValid = validateCurrentStep(true);
+
+    // Only proceed if current step is valid
+    if (currentStepValid) {
+      const currentIndex = this.get();
+      const newIndex = currentIndex + 1;
+      
+      if (newIndex < this.configService.totalSteps) {
+        this.set(newIndex);
+        
+        // Get and update step info
+        const step = this.configService.getStepByIndex(newIndex);
+        updateBindings(newIndex, step || null);
+        
+        return newIndex;
+      }
+    }
+    
+    return this.get();
+  }
+  /**
+   * Enhanced version of prevStep that also updates bindings
+   * 
+   * @param updateBindings Function to update bindings after navigation
+   * @returns New step index or current index if navigation fails
+   */
+  prevStepWithBindings(
+    updateBindings: (newIndex: number, step: FormStep | null) => void
+  ): number {
+    const currentIndex = this.get();
+    
+    if (currentIndex > 0) {
+      const newIndex = currentIndex - 1;
+      this.set(newIndex);
+      
+      // Get and update step info
+      const step = this.configService.getStepByIndex(newIndex);
+      updateBindings(newIndex, step || null);
+      
+      return newIndex;
+    }
+    
+    return currentIndex;
+  }
+  /**
+   * Enhanced version of goToStep that also updates bindings
+   * 
+   * @param stepIndex Target step index
+   * @param updateBindings Function to update bindings after navigation
+   * @returns True if navigation succeeded, false otherwise
+   */
+  goToStepWithBindings(
+    stepIndex: number,
+    updateBindings: (newIndex: number, step: FormStep | null) => void
+  ): boolean {
+    const result = this.goToStep(stepIndex);
+    
+    if (result) {
+      const step = this.configService.getStepByIndex(stepIndex);
+      updateBindings(stepIndex, step || null);
+    }
+    
+    return result;
   }
 }

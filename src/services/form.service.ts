@@ -1,5 +1,7 @@
 import { BaseService } from './base.service';
 import { ConfigService } from './config.service';
+import { FormStep } from '../interfaces/form-step.interface';
+import { Field } from '../interfaces/field.interface';
 
 /**
  * Service for managing form data and submission
@@ -81,34 +83,61 @@ export class FormService extends BaseService<Record<string, Record<string, any>>
 
     return flatData;
   }
-
   /**
-   * Reset form data to initial values
-   * @param defaultValues Optional custom default values
+   * Update a field value and validate it immediately
+   * 
+   * @param stepId Step ID
+   * @param fieldId Field ID
+   * @param value New field value
+   * @param markFieldTouched Function to mark the field as touched
+   * @param validateField Function to validate the field
+   * @param validateStepWithTouched Function to validate the step with touched fields only
    */
-  resetForm(defaultValues?: Record<string, any>): void {
-    const config = this.configService.get();
-    const initialData: Record<string, Record<string, any>> = {};
+  updateFieldWithValidation(
+    stepId: string, 
+    fieldId: string, 
+    value: any,
+    markFieldTouched: (stepId: string, fieldId: string, touched: boolean) => void,
+    validateField: (stepId: string, fieldId: string, value: any, showErrors: boolean) => boolean,
+    validateStepWithTouched: (stepId: string) => boolean
+  ): void {
+    // Update the field value
+    this.updateField(stepId, fieldId, value);
+        
+    // Mark this field as touched
+    markFieldTouched(stepId, fieldId, true);
 
-    // Reset to initial values from config
-    config.steps.forEach((step) => {
-      initialData[step.id] = {};
+    // Validate only the current field and show its errors
+    validateField(stepId, fieldId, value, true);
 
-      Object.entries(step.fields).forEach(([fieldId, field]) => {
-        const defaultValue = 
-          defaultValues?.[fieldId] ?? 
-          config.defaultValues?.[fieldId] ?? 
-          field.value ?? 
-          "";
-        initialData[step.id][fieldId] = defaultValue;
-      });
-    });
+    // Validate the step with showing errors only for touched fields
+    validateStepWithTouched(stepId);
+  }
+  
+  /**
+   * Reset form data to initial values and optionally reset related state
+   * 
+   * @param defaultValues Optional custom default values
+   * @param resetTouchTracking Function to reset touch tracking state
+   * @param validateForm Function to validate the form
+   */
+  resetFormWithState(
+    defaultValues?: Record<string, any>,
+    resetTouchTracking?: () => void,
+    validateForm?: (showErrors: boolean) => boolean
+  ): void {
+    // Reset the form data
+    this.resetForm(defaultValues);
     
-    // Reset form data
-    this.set(initialData);
+    // Reset touch tracking if provided
+    if (resetTouchTracking) {
+      resetTouchTracking();
+    }
     
-    // Reset errors
-    this.fieldErrorsService.set({});
+    // Re-validate without showing errors if provided
+    if (validateForm) {
+      validateForm(false);
+    }
   }
   /**
    * Handle form submission logic with integrated validation
@@ -151,8 +180,7 @@ export class FormService extends BaseService<Record<string, Record<string, any>>
       };
     }
   }
-  
-  /**
+    /**
    * Completely reset the form, touch tracking, and validation state
    * @param resetTouchTracking Function to reset touch tracking
    * @param validateForm Function to validate the entire form
@@ -169,5 +197,41 @@ export class FormService extends BaseService<Record<string, Record<string, any>>
     
     // Re-validate all steps immediately (without showing errors)
     validateForm();
+  }
+  
+  /**
+   * Get the ConfigService associated with this FormService
+   * @returns The ConfigService instance
+   */
+  getConfigService(): ConfigService {
+    return this.configService;
+  }
+  /**
+   * Reset form data to initial values
+   * @param defaultValues Optional custom default values
+   */
+  resetForm(defaultValues?: Record<string, any>): void {
+    const config = this.configService.get();
+    const initialData: Record<string, Record<string, any>> = {};
+
+    // Reset to initial values from config
+    config.steps.forEach((step: FormStep) => {
+      initialData[step.id] = {};
+
+      Object.entries(step.fields).forEach(([fieldId, field]: [string, Field]) => {
+        const defaultValue = 
+          defaultValues?.[fieldId] ?? 
+          config.defaultValues?.[fieldId] ?? 
+          field.value ??
+          "";
+        initialData[step.id][fieldId] = defaultValue;
+      });
+    });
+    
+    // Reset form data
+    this.set(initialData);
+    
+    // Reset errors
+    this.fieldErrorsService.set({});
   }
 }

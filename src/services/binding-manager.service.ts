@@ -68,13 +68,13 @@ export class BindingManager {
       currentStep: {
         current: self.configService.getStepByIndex(self.stepperService.get()) || config.steps[0],
         _callbacks: [] as ((value: FormStep) => void)[],
-        subscribe: function (callback: (value: FormStep) => void) {
+        subscribe: (callback: (value: FormStep) => void) => {
           // Create a computed property that depends on both currentStepIndex and config
           const unsubscribeIndex = self.stepperService.subscribe((stepIndex) => {
             const currentStep = self.configService.getStepByIndex(stepIndex);
             if (currentStep) {
               callback(currentStep);
-              this.current = currentStep;
+              self.bindings.currentStep.current = currentStep;
             }
           });
 

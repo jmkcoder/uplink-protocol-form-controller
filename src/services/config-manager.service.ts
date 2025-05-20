@@ -83,7 +83,6 @@ export class ConfigManagerService {
     // Reset to first step
     this.stepperService.set(0);
   }
-
   /**
    * Add a new step dynamically with updated form data
    * @param step New form step
@@ -111,7 +110,7 @@ export class ConfigManagerService {
     formData[step.id] = {};
     
     Object.entries(step.fields).forEach(([fieldId, field]) => {
-      const defaultValue = config.defaultValues?.[fieldId] ?? field.value ?? "";
+      const defaultValue = newConfig.defaultValues?.[fieldId] ?? field.value ?? "";
       formData[step.id][fieldId] = defaultValue;
     });
 

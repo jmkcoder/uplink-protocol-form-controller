@@ -54,11 +54,9 @@ export class BindingManager {
         set: function (value: FormConfig) {
           self.configService.set(value);
         },
-      },
-
-      // Track the current step index
+      },      // Track the current step index
       currentStepIndex: {
-        current: 0,
+        current: self.stepperService.get(),
         _callbacks: [] as ((value: number) => void)[],
         subscribe: function (callback: (value: number) => void) {
           return self.stepperService.subscribe(callback);
@@ -66,11 +64,9 @@ export class BindingManager {
         set: function (value: number) {
           self.stepperService.set(value);
         },
-      },
-
-      // Current step object
+      },      // Current step object
       currentStep: {
-        current: config.steps[0],
+        current: self.configService.getStepByIndex(self.stepperService.get()) || config.steps[0],
         _callbacks: [] as ((value: FormStep) => void)[],
         subscribe: function (callback: (value: FormStep) => void) {
           // Create a computed property that depends on both currentStepIndex and config

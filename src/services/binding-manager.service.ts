@@ -1,9 +1,9 @@
-import { ConfigService } from './config.service';
-import { StepperService } from './stepper.service';
-import { FormService } from './form.service';
-import { BaseService } from './base.service';
-import { FormStep } from '../interfaces/form-step.interface';
-import { FormConfig } from '../interfaces/form-config.interface';
+import { ConfigService } from "./config.service";
+import { StepperService } from "./stepper.service";
+import { FormService } from "./form.service";
+import { BaseService } from "./base.service";
+import { FormStep } from "../interfaces/form-step.interface";
+import { FormConfig } from "../interfaces/form-config.interface";
 
 /**
  * BindingManager - Manages the bindings system for the form controller
@@ -13,9 +13,11 @@ export class BindingManager {
   private configService: ConfigService;
   private stepperService: StepperService;
   private formService: FormService;
-  private fieldErrorsService: BaseService<Record<string, Record<string, string>>>;
+  private fieldErrorsService: BaseService<
+    Record<string, Record<string, string>>
+  >;
   private stepsValidityService: BaseService<Record<string, boolean>>;
-  
+
   // Bindings object that will be exposed to consumers
   public bindings: any;
 
@@ -31,7 +33,7 @@ export class BindingManager {
     this.formService = formService;
     this.fieldErrorsService = fieldErrorsService;
     this.stepsValidityService = stepsValidityService;
-    
+
     // Initialize the bindings object
     this.initializeBindings();
   }
@@ -54,7 +56,7 @@ export class BindingManager {
         set: function (value: FormConfig) {
           self.configService.set(value);
         },
-      },      // Track the current step index
+      }, // Track the current step index
       currentStepIndex: {
         current: self.stepperService.get(),
         _callbacks: [] as ((value: number) => void)[],
@@ -64,28 +66,34 @@ export class BindingManager {
         set: function (value: number) {
           self.stepperService.set(value);
         },
-      },      // Current step object
+      }, // Current step object
       currentStep: {
-        current: self.configService.getStepByIndex(self.stepperService.get()) || config.steps[0],
+        current:
+          self.configService.getStepByIndex(self.stepperService.get()) ||
+          config.steps[0],
         _callbacks: [] as ((value: FormStep) => void)[],
-        subscribe: (callback: (value: FormStep) => void) => {
+        subscribe: function (callback: (value: FormStep) => void) {
           // Create a computed property that depends on both currentStepIndex and config
-          const unsubscribeIndex = self.stepperService.subscribe((stepIndex) => {
-            const currentStep = self.configService.getStepByIndex(stepIndex);
-            if (currentStep) {
-              callback(currentStep);
-              self.bindings.currentStep.current = currentStep;
+          const unsubscribeIndex = self.stepperService.subscribe(
+            (stepIndex) => {
+              const currentStep = self.configService.getStepByIndex(stepIndex);
+              if (currentStep) {
+                callback(currentStep);
+                this.current = currentStep;
+              }
             }
-          });
+          );
 
           // Also listen for config changes
-          const unsubscribeConfig = self.configService.subscribe((newConfig) => {
-            const currentStep = newConfig.steps[self.stepperService.get()];
-            if (currentStep) {
-              callback(currentStep);
-              this.current = currentStep;
+          const unsubscribeConfig = self.configService.subscribe(
+            (newConfig) => {
+              const currentStep = newConfig.steps[self.stepperService.get()];
+              if (currentStep) {
+                callback(currentStep);
+                this.current = currentStep;
+              }
             }
-          });
+          );
 
           // Initialize with current value
           callback(this.current);
@@ -139,18 +147,23 @@ export class BindingManager {
         _callbacks: [] as ((value: boolean) => void)[],
         subscribe: function (callback: (value: boolean) => void) {
           // Setup subscriptions to dependencies for this computed property
-          const unsubscribeStep = self.bindings.currentStep.subscribe((step: FormStep) => {
-            const stepValid = self.stepsValidityService.get()[step.id] || false;
-            callback(stepValid);
-            this.current = stepValid;
-          });
+          const unsubscribeStep = self.bindings.currentStep.subscribe(
+            (step: FormStep) => {
+              const stepValid =
+                self.stepsValidityService.get()[step.id] || false;
+              callback(stepValid);
+              this.current = stepValid;
+            }
+          );
 
-          const unsubscribeValidity = self.stepsValidityService.subscribe((validityMap) => {
-            const currentStep = self.bindings.currentStep.current;
-            const stepValid = validityMap[currentStep.id] || false;
-            callback(stepValid);
-            this.current = stepValid;
-          });
+          const unsubscribeValidity = self.stepsValidityService.subscribe(
+            (validityMap) => {
+              const currentStep = self.bindings.currentStep.current;
+              const stepValid = validityMap[currentStep.id] || false;
+              callback(stepValid);
+              this.current = stepValid;
+            }
+          );
 
           return () => {
             unsubscribeStep();
@@ -195,7 +208,7 @@ export class BindingManager {
 
           // Initialize with current value
           callback(this.current);
-          
+
           return unsubscribe;
         },
         set: function () {
@@ -275,11 +288,13 @@ export class BindingManager {
           };
 
           // Update when dependencies change
-          const unsubscribeValidity = self.stepsValidityService.subscribe(() => {
-            const formValid = calculateFormValidity();
-            callback(formValid);
-            this.current = formValid;
-          });
+          const unsubscribeValidity = self.stepsValidityService.subscribe(
+            () => {
+              const formValid = calculateFormValidity();
+              callback(formValid);
+              this.current = formValid;
+            }
+          );
 
           const unsubscribeConfig = self.configService.subscribe(() => {
             const formValid = calculateFormValidity();
@@ -312,7 +327,7 @@ export class BindingManager {
   updateBindingsAfterNavigation(newIndex: number, step: FormStep | null): void {
     if (this.bindings) {
       this.bindings.currentStepIndex.current = newIndex;
-      
+
       if (step) {
         this.bindings.currentStep.current = step;
       }

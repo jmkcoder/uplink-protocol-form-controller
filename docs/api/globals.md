@@ -1,8 +1,8 @@
-[**@uplink-protocol/form-controller v0.2.5**](README.md)
+[**@uplink-protocol/form-controller v0.2.6**](README.md)
 
 ***
 
-# @uplink-protocol/form-controller v0.2.5
+# @uplink-protocol/form-controller v0.2.6
 
 @uplink-protocol/form-controller
 
@@ -12,10 +12,15 @@ with advanced validation capabilities. This module is part of the Odyssey Uplink
 ## Classes
 
 - [BaseService](classes/BaseService.md)
+- [BindingManager](classes/BindingManager.md)
+- [ConfigManagerService](classes/ConfigManagerService.md)
 - [ConfigService](classes/ConfigService.md)
 - [FieldService](classes/FieldService.md)
+- [FormControllerClass](classes/FormControllerClass.md)
+- [FormManagerService](classes/FormManagerService.md)
 - [FormService](classes/FormService.md)
 - [InteractionService](classes/InteractionService.md)
+- [NavigationManager](classes/NavigationManager.md)
 - [StepperService](classes/StepperService.md)
 - [ValidatorService](classes/ValidatorService.md)
 

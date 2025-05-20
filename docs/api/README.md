@@ -1,4 +1,4 @@
-**@uplink-protocol/form-controller v0.2.5**
+**@uplink-protocol/form-controller v0.2.6**
 
 ***
 
@@ -205,6 +205,7 @@ For detailed documentation and examples, see:
 - [Validation Guide](_media/validation-guide.md) - In-depth guide to validation capabilities
 - [Technical Guide](_media/technical-guide.md) - Implementation details and best practices
 - [TypeScript Usage](_media/typescript-usage.md) - Guide to using the form controller with TypeScript
+- [Extensibility Guide](_media/extensibility-guide.md) - Guide to extending the FormControllerClass for custom behavior
 - [API Reference](_media/README.md) - Auto-generated API documentation with types and examples
 
 ## Use Cases

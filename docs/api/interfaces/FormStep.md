@@ -1,4 +1,4 @@
-[**@uplink-protocol/form-controller v0.2.5**](../README.md)
+[**@uplink-protocol/form-controller v0.2.6**](../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Interface: FormStep
 
-Defined in: [interfaces/form-step.interface.ts:7](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/dd3b5a64ac66f6e3d93aa3a73dfcfe7109a8afc2/src/interfaces/form-step.interface.ts#L7)
+Defined in: [interfaces/form-step.interface.ts:7](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/b4197b802291c2a362dd28d04ee111d1534495f5/src/interfaces/form-step.interface.ts#L7)
 
 Step configuration for dynamic multi-step forms.
 Each step contains a set of related fields and optional validation.
@@ -17,7 +17,7 @@ Each step contains a set of related fields and optional validation.
 
 > `optional` **description**: `string`
 
-Defined in: [interfaces/form-step.interface.ts:15](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/dd3b5a64ac66f6e3d93aa3a73dfcfe7109a8afc2/src/interfaces/form-step.interface.ts#L15)
+Defined in: [interfaces/form-step.interface.ts:15](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/b4197b802291c2a362dd28d04ee111d1534495f5/src/interfaces/form-step.interface.ts#L15)
 
 Optional description text for the step
 
@@ -27,7 +27,7 @@ Optional description text for the step
 
 > **fields**: `Record`\<`string`, [`Field`](Field.md)\>
 
-Defined in: [interfaces/form-step.interface.ts:21](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/dd3b5a64ac66f6e3d93aa3a73dfcfe7109a8afc2/src/interfaces/form-step.interface.ts#L21)
+Defined in: [interfaces/form-step.interface.ts:21](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/b4197b802291c2a362dd28d04ee111d1534495f5/src/interfaces/form-step.interface.ts#L21)
 
 Map of fields contained in this step.
 Keys are field IDs, values are field configurations.
@@ -38,7 +38,7 @@ Keys are field IDs, values are field configurations.
 
 > **id**: `string`
 
-Defined in: [interfaces/form-step.interface.ts:9](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/dd3b5a64ac66f6e3d93aa3a73dfcfe7109a8afc2/src/interfaces/form-step.interface.ts#L9)
+Defined in: [interfaces/form-step.interface.ts:9](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/b4197b802291c2a362dd28d04ee111d1534495f5/src/interfaces/form-step.interface.ts#L9)
 
 Unique identifier for the step
 
@@ -48,7 +48,7 @@ Unique identifier for the step
 
 > **title**: `string`
 
-Defined in: [interfaces/form-step.interface.ts:12](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/dd3b5a64ac66f6e3d93aa3a73dfcfe7109a8afc2/src/interfaces/form-step.interface.ts#L12)
+Defined in: [interfaces/form-step.interface.ts:12](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/b4197b802291c2a362dd28d04ee111d1534495f5/src/interfaces/form-step.interface.ts#L12)
 
 Display title for the step
 
@@ -58,7 +58,7 @@ Display title for the step
 
 > `optional` **validation**: (`formData`) => `string` \| `boolean`
 
-Defined in: [interfaces/form-step.interface.ts:30](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/dd3b5a64ac66f6e3d93aa3a73dfcfe7109a8afc2/src/interfaces/form-step.interface.ts#L30)
+Defined in: [interfaces/form-step.interface.ts:30](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/b4197b802291c2a362dd28d04ee111d1534495f5/src/interfaces/form-step.interface.ts#L30)
 
 Optional custom validation function for the entire step.
 Called after all individual field validations have passed.

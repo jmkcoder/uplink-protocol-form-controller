@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.6] - 2025-05-19
+
+### Added
+- `ConfigManagerService` with comprehensive configuration management capabilities
+- Dynamic step management with `addStepWithFormData` and `removeStepWithCleanup` methods
+- Full form reset functionality with `updateConfigWithFullReset` method
+
+### Changed
+- Improved internal state management when dynamically modifying form structure
+- Enhanced service coordination for configuration updates
+
 ## [0.2.5] - 2025-05-19
 
 ### Fixed

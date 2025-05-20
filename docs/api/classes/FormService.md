@@ -1,4 +1,4 @@
-[**@uplink-protocol/form-controller v0.2.5**](../README.md)
+[**@uplink-protocol/form-controller v0.2.6**](../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Class: FormService
 
-Defined in: [services/form.service.ts:7](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/dd3b5a64ac66f6e3d93aa3a73dfcfe7109a8afc2/src/services/form.service.ts#L7)
+Defined in: [services/form.service.ts:9](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/b4197b802291c2a362dd28d04ee111d1534495f5/src/services/form.service.ts#L9)
 
 Service for managing form data and submission
 
@@ -20,7 +20,7 @@ Service for managing form data and submission
 
 > **new FormService**(`initialFormData`, `configService`, `fieldErrorsService`, `stepsValidityService`): `FormService`
 
-Defined in: [services/form.service.ts:11](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/dd3b5a64ac66f6e3d93aa3a73dfcfe7109a8afc2/src/services/form.service.ts#L11)
+Defined in: [services/form.service.ts:13](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/b4197b802291c2a362dd28d04ee111d1534495f5/src/services/form.service.ts#L13)
 
 #### Parameters
 
@@ -54,7 +54,7 @@ Defined in: [services/form.service.ts:11](https://github.com/jmkcoder/uplink-pro
 
 > `protected` **\_callbacks**: (`value`) => `void`[] = `[]`
 
-Defined in: [services/base.service.ts:13](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/dd3b5a64ac66f6e3d93aa3a73dfcfe7109a8afc2/src/services/base.service.ts#L13)
+Defined in: [services/base.service.ts:13](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/b4197b802291c2a362dd28d04ee111d1534495f5/src/services/base.service.ts#L13)
 
 Array of callback functions subscribed to state changes
 
@@ -78,7 +78,7 @@ Array of callback functions subscribed to state changes
 
 > `protected` **current**: `Record`
 
-Defined in: [services/base.service.ts:10](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/dd3b5a64ac66f6e3d93aa3a73dfcfe7109a8afc2/src/services/base.service.ts#L10)
+Defined in: [services/base.service.ts:10](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/b4197b802291c2a362dd28d04ee111d1534495f5/src/services/base.service.ts#L10)
 
 The current value of the service state
 
@@ -92,7 +92,7 @@ The current value of the service state
 
 > **completeReset**(`resetTouchTracking`, `validateForm`): `void`
 
-Defined in: [services/form.service.ts:160](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/dd3b5a64ac66f6e3d93aa3a73dfcfe7109a8afc2/src/services/form.service.ts#L160)
+Defined in: [services/form.service.ts:188](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/b4197b802291c2a362dd28d04ee111d1534495f5/src/services/form.service.ts#L188)
 
 Completely reset the form, touch tracking, and validation state
 
@@ -120,7 +120,7 @@ Function to validate the entire form
 
 > **get**(): `Record`
 
-Defined in: [services/base.service.ts:56](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/dd3b5a64ac66f6e3d93aa3a73dfcfe7109a8afc2/src/services/base.service.ts#L56)
+Defined in: [services/base.service.ts:56](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/b4197b802291c2a362dd28d04ee111d1534495f5/src/services/base.service.ts#L56)
 
 Get the current value
 
@@ -140,7 +140,7 @@ Current value
 
 > **getAllData**(): `Record`\<`string`, `Record`\<`string`, `any`\>\>
 
-Defined in: [services/form.service.ts:65](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/dd3b5a64ac66f6e3d93aa3a73dfcfe7109a8afc2/src/services/form.service.ts#L65)
+Defined in: [services/form.service.ts:67](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/b4197b802291c2a362dd28d04ee111d1534495f5/src/services/form.service.ts#L67)
 
 Get all form data
 
@@ -152,11 +152,27 @@ Complete form data
 
 ***
 
+### getConfigService()
+
+> **getConfigService**(): [`ConfigService`](ConfigService.md)
+
+Defined in: [services/form.service.ts:206](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/b4197b802291c2a362dd28d04ee111d1534495f5/src/services/form.service.ts#L206)
+
+Get the ConfigService associated with this FormService
+
+#### Returns
+
+[`ConfigService`](ConfigService.md)
+
+The ConfigService instance
+
+***
+
 ### getFlatData()
 
 > **getFlatData**(): `Record`\<`string`, `any`\>
 
-Defined in: [services/form.service.ts:73](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/dd3b5a64ac66f6e3d93aa3a73dfcfe7109a8afc2/src/services/form.service.ts#L73)
+Defined in: [services/form.service.ts:75](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/b4197b802291c2a362dd28d04ee111d1534495f5/src/services/form.service.ts#L75)
 
 Get flattened form data (merged from all steps)
 
@@ -172,7 +188,7 @@ Flattened form data
 
 > **getStepData**(`stepId`): `Record`\<`string`, `any`\>
 
-Defined in: [services/form.service.ts:57](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/dd3b5a64ac66f6e3d93aa3a73dfcfe7109a8afc2/src/services/form.service.ts#L57)
+Defined in: [services/form.service.ts:59](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/b4197b802291c2a362dd28d04ee111d1534495f5/src/services/form.service.ts#L59)
 
 Get form data for a specific step
 
@@ -196,7 +212,7 @@ Step data or empty object if step doesn't exist
 
 > **resetForm**(`defaultValues?`): `void`
 
-Defined in: [services/form.service.ts:89](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/dd3b5a64ac66f6e3d93aa3a73dfcfe7109a8afc2/src/services/form.service.ts#L89)
+Defined in: [services/form.service.ts:213](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/b4197b802291c2a362dd28d04ee111d1534495f5/src/services/form.service.ts#L213)
 
 Reset form data to initial values
 
@@ -214,11 +230,45 @@ Optional custom default values
 
 ***
 
+### resetFormWithState()
+
+> **resetFormWithState**(`defaultValues?`, `resetTouchTracking?`, `validateForm?`): `void`
+
+Defined in: [services/form.service.ts:124](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/b4197b802291c2a362dd28d04ee111d1534495f5/src/services/form.service.ts#L124)
+
+Reset form data to initial values and optionally reset related state
+
+#### Parameters
+
+##### defaultValues?
+
+`Record`\<`string`, `any`\>
+
+Optional custom default values
+
+##### resetTouchTracking?
+
+() => `void`
+
+Function to reset touch tracking state
+
+##### validateForm?
+
+(`showErrors`) => `boolean`
+
+Function to validate the form
+
+#### Returns
+
+`void`
+
+***
+
 ### set()
 
 > **set**(`value`): `void`
 
-Defined in: [services/base.service.ts:45](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/dd3b5a64ac66f6e3d93aa3a73dfcfe7109a8afc2/src/services/base.service.ts#L45)
+Defined in: [services/base.service.ts:45](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/b4197b802291c2a362dd28d04ee111d1534495f5/src/services/base.service.ts#L45)
 
 Update the service value and notify all subscribers.
 
@@ -244,7 +294,7 @@ New value to set
 
 > **submitForm**(`validateAndMarkTouched`, `findFirstInvalidStep`, `goToStep`): `object`
 
-Defined in: [services/form.service.ts:120](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/dd3b5a64ac66f6e3d93aa3a73dfcfe7109a8afc2/src/services/form.service.ts#L120)
+Defined in: [services/form.service.ts:149](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/b4197b802291c2a362dd28d04ee111d1534495f5/src/services/form.service.ts#L149)
 
 Handle form submission logic with integrated validation
 
@@ -292,7 +342,7 @@ Submission result object
 
 > **subscribe**(`callback`): () => `void`
 
-Defined in: [services/base.service.ts:31](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/dd3b5a64ac66f6e3d93aa3a73dfcfe7109a8afc2/src/services/base.service.ts#L31)
+Defined in: [services/base.service.ts:31](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/b4197b802291c2a362dd28d04ee111d1534495f5/src/services/base.service.ts#L31)
 
 Subscribe to changes in the service value.
 Callback is immediately invoked with the current value.
@@ -325,7 +375,7 @@ An unsubscribe function that removes this subscription
 
 > **updateField**(`stepId`, `fieldId`, `value`): `void`
 
-Defined in: [services/form.service.ts:29](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/dd3b5a64ac66f6e3d93aa3a73dfcfe7109a8afc2/src/services/form.service.ts#L29)
+Defined in: [services/form.service.ts:31](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/b4197b802291c2a362dd28d04ee111d1534495f5/src/services/form.service.ts#L31)
 
 Update a field value
 
@@ -348,6 +398,58 @@ Field ID
 `any`
 
 New field value
+
+#### Returns
+
+`void`
+
+***
+
+### updateFieldWithValidation()
+
+> **updateFieldWithValidation**(`stepId`, `fieldId`, `value`, `markFieldTouched`, `validateField`, `validateStepWithTouched`): `void`
+
+Defined in: [services/form.service.ts:96](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/b4197b802291c2a362dd28d04ee111d1534495f5/src/services/form.service.ts#L96)
+
+Update a field value and validate it immediately
+
+#### Parameters
+
+##### stepId
+
+`string`
+
+Step ID
+
+##### fieldId
+
+`string`
+
+Field ID
+
+##### value
+
+`any`
+
+New field value
+
+##### markFieldTouched
+
+(`stepId`, `fieldId`, `touched`) => `void`
+
+Function to mark the field as touched
+
+##### validateField
+
+(`stepId`, `fieldId`, `value`, `showErrors`) => `boolean`
+
+Function to validate the field
+
+##### validateStepWithTouched
+
+(`stepId`) => `boolean`
+
+Function to validate the step with touched fields only
 
 #### Returns
 

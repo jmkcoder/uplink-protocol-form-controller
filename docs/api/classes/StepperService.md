@@ -1,4 +1,4 @@
-[**@uplink-protocol/form-controller v0.2.5**](../README.md)
+[**@uplink-protocol/form-controller v0.2.6**](../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Class: StepperService
 
-Defined in: [services/stepper.service.ts:7](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/dd3b5a64ac66f6e3d93aa3a73dfcfe7109a8afc2/src/services/stepper.service.ts#L7)
+Defined in: [services/stepper.service.ts:8](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/b4197b802291c2a362dd28d04ee111d1534495f5/src/services/stepper.service.ts#L8)
 
 Service for managing multi-step form navigation
 
@@ -20,7 +20,7 @@ Service for managing multi-step form navigation
 
 > **new StepperService**(`initialStepIndex`, `configService`): `StepperService`
 
-Defined in: [services/stepper.service.ts:10](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/dd3b5a64ac66f6e3d93aa3a73dfcfe7109a8afc2/src/services/stepper.service.ts#L10)
+Defined in: [services/stepper.service.ts:11](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/b4197b802291c2a362dd28d04ee111d1534495f5/src/services/stepper.service.ts#L11)
 
 #### Parameters
 
@@ -46,7 +46,7 @@ Defined in: [services/stepper.service.ts:10](https://github.com/jmkcoder/uplink-
 
 > `protected` **\_callbacks**: (`value`) => `void`[] = `[]`
 
-Defined in: [services/base.service.ts:13](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/dd3b5a64ac66f6e3d93aa3a73dfcfe7109a8afc2/src/services/base.service.ts#L13)
+Defined in: [services/base.service.ts:13](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/b4197b802291c2a362dd28d04ee111d1534495f5/src/services/base.service.ts#L13)
 
 Array of callback functions subscribed to state changes
 
@@ -70,7 +70,7 @@ Array of callback functions subscribed to state changes
 
 > `protected` **current**: `number`
 
-Defined in: [services/base.service.ts:10](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/dd3b5a64ac66f6e3d93aa3a73dfcfe7109a8afc2/src/services/base.service.ts#L10)
+Defined in: [services/base.service.ts:10](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/b4197b802291c2a362dd28d04ee111d1534495f5/src/services/base.service.ts#L10)
 
 The current value of the service state
 
@@ -86,7 +86,7 @@ The current value of the service state
 
 > **get** **isFirstStep**(): `boolean`
 
-Defined in: [services/stepper.service.ts:93](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/dd3b5a64ac66f6e3d93aa3a73dfcfe7109a8afc2/src/services/stepper.service.ts#L93)
+Defined in: [services/stepper.service.ts:95](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/b4197b802291c2a362dd28d04ee111d1534495f5/src/services/stepper.service.ts#L95)
 
 Check if currently on the first step
 
@@ -104,7 +104,7 @@ True if on first step
 
 > **get** **isLastStep**(): `boolean`
 
-Defined in: [services/stepper.service.ts:101](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/dd3b5a64ac66f6e3d93aa3a73dfcfe7109a8afc2/src/services/stepper.service.ts#L101)
+Defined in: [services/stepper.service.ts:103](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/b4197b802291c2a362dd28d04ee111d1534495f5/src/services/stepper.service.ts#L103)
 
 Check if currently on the last step
 
@@ -120,7 +120,7 @@ True if on last step
 
 > **get**(): `number`
 
-Defined in: [services/base.service.ts:56](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/dd3b5a64ac66f6e3d93aa3a73dfcfe7109a8afc2/src/services/base.service.ts#L56)
+Defined in: [services/base.service.ts:56](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/b4197b802291c2a362dd28d04ee111d1534495f5/src/services/base.service.ts#L56)
 
 Get the current value
 
@@ -140,7 +140,7 @@ Current value
 
 > **goToStep**(`stepIndex`): `boolean`
 
-Defined in: [services/stepper.service.ts:79](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/dd3b5a64ac66f6e3d93aa3a73dfcfe7109a8afc2/src/services/stepper.service.ts#L79)
+Defined in: [services/stepper.service.ts:81](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/b4197b802291c2a362dd28d04ee111d1534495f5/src/services/stepper.service.ts#L81)
 
 Go to a specific step by index
 
@@ -160,11 +160,41 @@ True if navigation was successful, false otherwise
 
 ***
 
+### goToStepWithBindings()
+
+> **goToStepWithBindings**(`stepIndex`, `updateBindings`): `boolean`
+
+Defined in: [services/stepper.service.ts:177](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/b4197b802291c2a362dd28d04ee111d1534495f5/src/services/stepper.service.ts#L177)
+
+Enhanced version of goToStep that also updates bindings
+
+#### Parameters
+
+##### stepIndex
+
+`number`
+
+Target step index
+
+##### updateBindings
+
+(`newIndex`, `step`) => `void`
+
+Function to update bindings after navigation
+
+#### Returns
+
+`boolean`
+
+True if navigation succeeded, false otherwise
+
+***
+
 ### nextStep()
 
 > **nextStep**(`validateCallback?`): `number`
 
-Defined in: [services/stepper.service.ts:19](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/dd3b5a64ac66f6e3d93aa3a73dfcfe7109a8afc2/src/services/stepper.service.ts#L19)
+Defined in: [services/stepper.service.ts:21](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/b4197b802291c2a362dd28d04ee111d1534495f5/src/services/stepper.service.ts#L21)
 
 Navigate to the next step if possible
 
@@ -184,11 +214,54 @@ New step index or current step if navigation isn't possible
 
 ***
 
+### nextStepWithValidation()
+
+> **nextStepWithValidation**(`currentStep`, `markFieldsTouched`, `validateCurrentStep`, `updateBindings`): `number`
+
+Defined in: [services/stepper.service.ts:116](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/b4197b802291c2a362dd28d04ee111d1534495f5/src/services/stepper.service.ts#L116)
+
+Validate current step and navigate to next if valid
+Also updates bindings to ensure immediate access to current values
+
+#### Parameters
+
+##### currentStep
+
+[`FormStep`](../interfaces/FormStep.md)
+
+The current step object
+
+##### markFieldsTouched
+
+(`stepId`, `touched`) => `void`
+
+Function to mark fields as touched
+
+##### validateCurrentStep
+
+(`showErrors`) => `boolean`
+
+Function to validate the current step
+
+##### updateBindings
+
+(`newIndex`, `step`) => `void`
+
+Function to update bindings after navigation
+
+#### Returns
+
+`number`
+
+New step index or current step if navigation fails
+
+***
+
 ### prevStep()
 
 > **prevStep**(): `number`
 
-Defined in: [services/stepper.service.ts:66](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/dd3b5a64ac66f6e3d93aa3a73dfcfe7109a8afc2/src/services/stepper.service.ts#L66)
+Defined in: [services/stepper.service.ts:68](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/b4197b802291c2a362dd28d04ee111d1534495f5/src/services/stepper.service.ts#L68)
 
 Navigate to the previous step if possible
 
@@ -200,11 +273,35 @@ New step index or 0 if already at first step
 
 ***
 
+### prevStepWithBindings()
+
+> **prevStepWithBindings**(`updateBindings`): `number`
+
+Defined in: [services/stepper.service.ts:152](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/b4197b802291c2a362dd28d04ee111d1534495f5/src/services/stepper.service.ts#L152)
+
+Enhanced version of prevStep that also updates bindings
+
+#### Parameters
+
+##### updateBindings
+
+(`newIndex`, `step`) => `void`
+
+Function to update bindings after navigation
+
+#### Returns
+
+`number`
+
+New step index or current index if navigation fails
+
+***
+
 ### set()
 
 > **set**(`value`): `void`
 
-Defined in: [services/base.service.ts:45](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/dd3b5a64ac66f6e3d93aa3a73dfcfe7109a8afc2/src/services/base.service.ts#L45)
+Defined in: [services/base.service.ts:45](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/b4197b802291c2a362dd28d04ee111d1534495f5/src/services/base.service.ts#L45)
 
 Update the service value and notify all subscribers.
 
@@ -230,7 +327,7 @@ New value to set
 
 > **subscribe**(`callback`): () => `void`
 
-Defined in: [services/base.service.ts:31](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/dd3b5a64ac66f6e3d93aa3a73dfcfe7109a8afc2/src/services/base.service.ts#L31)
+Defined in: [services/base.service.ts:31](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/b4197b802291c2a362dd28d04ee111d1534495f5/src/services/base.service.ts#L31)
 
 Subscribe to changes in the service value.
 Callback is immediately invoked with the current value.
@@ -263,7 +360,7 @@ An unsubscribe function that removes this subscription
 
 > **validateAndNext**(`currentStepId`, `markStepTouched`, `validateStep`): `number`
 
-Defined in: [services/stepper.service.ts:38](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/dd3b5a64ac66f6e3d93aa3a73dfcfe7109a8afc2/src/services/stepper.service.ts#L38)
+Defined in: [services/stepper.service.ts:40](https://github.com/jmkcoder/uplink-protocol-form-controller/blob/b4197b802291c2a362dd28d04ee111d1534495f5/src/services/stepper.service.ts#L40)
 
 Validate current step and navigate to next if valid
 

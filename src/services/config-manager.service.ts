@@ -73,8 +73,7 @@ export class ConfigManagerService {
       });
     });
     
-    // Set the form data directly instead of using the callback
-    this.formService.set(initialFormData);
+    // Reset the form to its initial state
     this.formService.resetForm();
     
     // Re-validate without showing errors
